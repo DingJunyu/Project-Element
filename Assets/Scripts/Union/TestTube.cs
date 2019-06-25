@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using UnityEngine;
 
 public class TestTube : MonoBehaviour
@@ -12,6 +14,8 @@ public class TestTube : MonoBehaviour
 
     private float numRemained = 100f;
     private float numUsed = 0f;
+
+    private long SerialNum;
 
     private int test_FlameCount;//フレームを統計する物
     void CountFlame() {//フレームを統計する(60フレームまで)
