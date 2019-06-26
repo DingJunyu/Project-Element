@@ -30,12 +30,29 @@ public class TypeOfMagic
         targetColor = crBox.GetThis((int)Type.noneType, 1f);
     }
 
+    public TypeOfMagic(int thisType,float Damage,int capacity) {
+        for (int i = 0; i < (int)Type.type_amount; i++) status[i] = 0f;
+        damage = 0;
+        capacity = 0;
+        crBox = new ColorBox();
+        best = new TwoNum();
+        targetColor = crBox.GetThis((int)Type.noneType, 1f);
+
+        status[thisType] += Damage;
+        capacity += capacity;
+
+        best = FindMax();
+    }
+
     /*属性状態*/
     float[] status = new float[(int)Type.type_amount];
     int typeCount;
     const int Max_typeCount = 2;//属性数の最大値
 
     TwoNum best;
+
+    /*S&L関連*/
+    string[] name = { "water", "earth", "fire", "wood", "metal", "none" };
 
     int capacity;
     const int maxCapacity = 100;
@@ -118,15 +135,32 @@ public class TypeOfMagic
         return targetColor;
     }
 
+    //パッケージ化入力
+    public bool InputNewAttribute(Material material) {
+        float propotion = 1;
+        if (capacity >= maxCapacity)
+            return false;
+        if (material.capacity + capacity >= maxCapacity)
+        {
+            propotion = (maxCapacity - capacity) / material.capacity;//もし上限を超えたら
+        }
+        InputRestraint(material.thisType, material.Damage * propotion);
 
-    public bool InputNewAttribute(int thisType, int amount, float damage) {
+        best = FindMax();
+        SetColor();
+
+        return true;
+    }
+
+    //一般入力
+    public bool InputNewAttribute(int thisType, int amount, float Damage) {
         float propotion = 1;
         if (capacity >= maxCapacity)
             return false;
         if (amount + capacity >= maxCapacity) {
             propotion = (maxCapacity - capacity) / amount;//もし上限を超えたら
         }
-        InputRestraint(thisType, damage * propotion);
+        InputRestraint(thisType, Damage * propotion);
 
         best = FindMax();
         SetColor();
@@ -135,8 +169,30 @@ public class TypeOfMagic
     }
 
     public DamageContainer ReferDamage() {
-        best = FindMax();
         DamageContainer answer = new DamageContainer(best.a, status[best.a], best.b, status[best.b]);
         return answer;
-    } 
+    }
+
+    public void Save(string code) {
+        for (int i = 0; i < (int)Type.type_amount; i++) {
+            PlayerPrefs.SetFloat(code + name[i], status[i]);
+        }
+        PlayerPrefs.SetInt(code + "capacity", capacity);
+    }
+
+    public void Load(string code) {
+        for (int i = 0; i < (int)Type.type_amount; i++)
+        {
+            PlayerPrefs.GetFloat(code + name[i], status[i]);
+        }
+        PlayerPrefs.GetInt(code + "capacity", capacity);
+    }
+
+    public void Delete(string code) {
+        for (int i = 0; i < (int)Type.type_amount; i++)
+        {
+            PlayerPrefs.DeleteKey(code + name[i]);
+        }
+        PlayerPrefs.DeleteKey(code + "capacity");
+    }
 }
