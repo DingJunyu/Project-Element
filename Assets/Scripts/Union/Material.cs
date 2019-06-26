@@ -6,28 +6,25 @@ public class Material : MonoBehaviour
 {
     public bool typeRandom;
 
-    public readonly int capacity;
-    public readonly int thisType;
-    public readonly float Damage;
+    public  int capacity;
+    private int thisType;
+    public int ReferThisType() { return thisType; }
+    public  float Damage;
 
-    System.Random rand = new System.Random();
+    public bool choosed;
 
-    public int setMyType = (int)TypeOfMagic.Type.noneType;
+    public int setMyType;
 
-    public Material() {
-        capacity = rand.Next(0,50);
-        Damage = (float)capacity * (float)rand.Next(16)/10f;
+    private void Start()
+    {
+        capacity = Random.Range(15, 50);
+        Damage = (float)capacity * Random.Range(0f,1.6f);
 
         //範囲チェック付きます、正しいデータを付けた限りセットを有効化にする
         if (typeRandom || setMyType > (int)TypeOfMagic.Type.noneType ||
             setMyType < (int)TypeOfMagic.Type.water)
-            thisType = rand.Next(5);
+            thisType = Random.Range(0,5);
         else
             thisType = setMyType;
-    }
-
-    private void Start()
-    {
-
     }
 }

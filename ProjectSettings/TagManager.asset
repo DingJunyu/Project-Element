@@ -6,6 +6,8 @@ TagManager:
   tags:
   - reagent
   - tube
+  - Item_Material
+  - Item_Mark
   layers:
   - Default
   - TransparentFX

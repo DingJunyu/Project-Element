@@ -62,8 +62,7 @@ public class TestTube : MonoBehaviour
         if (!changed)
             return;
         reagent.GetComponent<Renderer>().material.color =
-           crBox.GetThis((int)TypeOfMagic.Type.fire, 0.6f, 
-           (int)TypeOfMagic.Type.metal, 0.4f);
+           Type.ReferColor();
         changed = false;
     }
 

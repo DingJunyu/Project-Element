@@ -144,23 +144,8 @@ public class TypeOfMagic
         {
             propotion = (maxCapacity - capacity) / material.capacity;//もし上限を超えたら
         }
-        InputRestraint(material.thisType, material.Damage * propotion);
-
-        best = FindMax();
-        SetColor();
-
-        return true;
-    }
-
-    //一般入力
-    public bool InputNewAttribute(int thisType, int amount, float Damage) {
-        float propotion = 1;
-        if (capacity >= maxCapacity)
-            return false;
-        if (amount + capacity >= maxCapacity) {
-            propotion = (maxCapacity - capacity) / amount;//もし上限を超えたら
-        }
-        InputRestraint(thisType, Damage * propotion);
+        InputRestraint(material.ReferThisType(), material.Damage * propotion);
+        capacity += material.capacity;
 
         best = FindMax();
         SetColor();
