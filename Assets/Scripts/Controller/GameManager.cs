@@ -10,6 +10,15 @@ public class GameManager : MonoBehaviour
     public GameObject choosedA;
     public GameObject choosedB;
 
+    /*単独のファイルにまとめる*/
+    //必要のは：倉庫(200)、パック(50)、試験管パック(12)
+    private class MyGameObject {
+        public GameObject thisGameObject;
+        string SerialNumber;
+    }
+
+    List<MyGameObject> MyItemList;
+
     // Start is called before the first frame update
     void Start()
     {

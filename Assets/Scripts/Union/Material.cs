@@ -14,6 +14,7 @@ public class Material : MonoBehaviour
     public bool choosed;
 
     public int setMyType;
+    public string name;
 
     private void Start()
     {
