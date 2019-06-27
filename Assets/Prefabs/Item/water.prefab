@@ -94,8 +94,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeRandom: 0
+  capacity: 0
+  Damage: 0
   choosed: 0
   setMyType: 0
+  name: Water
 --- !u!61 &411387881642293403
 BoxCollider2D:
   m_ObjectHideFlags: 0
