@@ -11,6 +11,12 @@ public class TypeOfAttack
             annulus
         }
 
+        public static readonly string[] shapeTypeName = {
+            "光線",
+            "射線",
+            "円環"
+        };
+
         int rayOfLight;
         int radialLight;
         int annulus;
@@ -18,7 +24,8 @@ public class TypeOfAttack
         int maxOne;
         int maxName;
 
-        public int RefermaxName() { return maxName; }
+        public int ReferMaxName() { return maxName; }
+        public int ReferMaxOne() { return maxOne; }
 
         public Shape() {
             rayOfLight = 1;
@@ -62,19 +69,30 @@ public class TypeOfAttack
             diffusion
         }
 
+        public static readonly string[] stepTypeName = {
+            "瞬間",
+            "階段",
+            "拡散"
+        };
+
         int moment;//瞬間
         int stage;//パー　パー　パーな感じ～
         int diffusion;//拡散
 
         float speed;
+        public float ReferSpeed() { return speed; }
 
         int maxOne;
         int maxName;
+
+        public int ReferMaxName() { return maxName; }
 
         public SpeedAndSteps() {
             moment = 1;
             stage = 0;
             diffusion = 0;
+
+            speed = 0.5f;
 
             maxOne = 1;
             maxName = (int)TypeOfStep.moment;
@@ -120,6 +138,25 @@ public class TypeOfAttack
     }
 
     public void InputNewMaterials(Material material){
+        shape.inputNew(material.ReferShapeType(), material.ReferStrength());
+        speedAndSteps.inputNew(material.ReferStepType(), material.ReferStrength(),
+            material.ReferSpeed());
+        if (material.ReferFog()&&!isFog) {
+            if (Random.Range(0, 100) > 60)
+                isFog = true;
+        }
+    }
 
+    public string ReferAttackType() {
+        return Shape.shapeTypeName[shape.ReferMaxName()] + " " +
+            SpeedAndSteps.stepTypeName[speedAndSteps.ReferMaxName()];
+    }
+
+    public bool ReferFog() {
+        return isFog;
+    }
+
+    public float ReferSpeed() {
+        return speedAndSteps.ReferSpeed();
     }
 }

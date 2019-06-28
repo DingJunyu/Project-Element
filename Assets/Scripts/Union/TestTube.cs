@@ -7,12 +7,16 @@ using UnityEngine;
 public class TestTube : MonoBehaviour
 {
     // Data
-    private TypeOfMagic Type = new TypeOfMagic();
+    private TypeOfMagic Type;
+    private TypeOfAttack AttackType;
     private Transform reagent;
 
-    private ColorBox crBox = new ColorBox();
+    public GameObject textBar;//textBarのデータを保存する
+    private GameObject realTextBar;//実際生成したtextBar
 
-    private float numRemained = 100f;
+    private ColorBox crBox;
+
+    private float numRemained = 0f;
     private float numUsed = 0f;
 
     private string serialNum;
@@ -27,6 +31,12 @@ public class TestTube : MonoBehaviour
     void CountFlame() {//フレームを統計する(60フレームまで)
         test_FlameCount++;
         test_FlameCount %= 60;
+    }
+
+    public TestTube() {
+        Type = new TypeOfMagic();
+        AttackType = new TypeOfAttack();
+        crBox = new ColorBox();
     }
 
     private void Start()
@@ -92,6 +102,51 @@ public class TestTube : MonoBehaviour
         if (success) {
             changed = true;
         }
+        if (!success)
+            return success;
+
+        numRemained = Type.ReferCapacity();
+        AttackType.InputNewMaterials(material);//入れるの場合だけ入る
+
         return success;
+    }
+
+    private void OnMouseOver()
+    {
+        if (realTextBar != default)
+            return;
+
+        realTextBar = textBar;//textBarは空きじゃないので
+
+        //生成したＵＩをrealTextBarに記録する
+        realTextBar = Instantiate(realTextBar,
+            transform.position, Quaternion.identity);
+
+        /*名前部分*/
+        realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
+            text = "試験管";
+        realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
+            color = crBox.GetThis(Type.ReferMax(), 0.7f, (int)TypeOfMagic.Type.noneType,
+            0.3f);
+
+        realTextBar.gameObject.transform.Find("Status").GetComponent<UnityEngine.UI.Text>().
+            text = TypeOfMagic.name_jp[Type.ReferDamage().typeA] +  
+            string.Format("{0:.00}", Type.ReferDamage().typeADam) + " " +
+            TypeOfMagic.name_jp[Type.ReferDamage().typeB] +
+            string.Format("{0:.00}", Type.ReferDamage().typeBDam) + " " +
+            string.Format("速度 {0:.00}", AttackType.ReferSpeed());
+
+        realTextBar.gameObject.transform.Find("Type").GetComponent<UnityEngine.UI.Text>().
+            text = AttackType.ReferAttackType() +
+            (AttackType.ReferFog() ? "霧" : "");
+
+        realTextBar.gameObject.transform.Find("Other").GetComponent<UnityEngine.UI.Text>().
+            text = string.Format("{0:.0}/{0:.0}", numRemained - numUsed, numRemained);
+    }
+
+    private void OnMouseExit()
+    {
+        Destroy(realTextBar);
+        realTextBar = default;
     }
 }

@@ -51,10 +51,16 @@ public class TypeOfMagic
 
     TwoNum best;
 
+    public int ReferMax() { return best.a; }
+
     /*S&L関連*/
-    string[] name = { "water", "earth", "fire", "wood", "metal", "none" };
+    public static readonly string[] name = 
+        { "water", "earth", "fire", "wood", "metal", "none" };
+    public static readonly string[] name_jp = {
+          "水","土","火","木","金","空"};
 
     int capacity;
+    public int ReferCapacity() { return capacity; }
     const int maxCapacity = 100;
     public bool CanIPutNewResIn() { return capacity < maxCapacity; }
 
@@ -140,12 +146,14 @@ public class TypeOfMagic
         float propotion = 1;
         if (capacity >= maxCapacity)
             return false;
-        if (material.capacity + capacity >= maxCapacity)
-        {
+        if (material.capacity + capacity >= maxCapacity) {
             propotion = (maxCapacity - capacity) / material.capacity;//もし上限を超えたら
         }
-        InputRestraint(material.ReferThisType(), material.Damage * propotion);
+
+        InputRestraint(material.ReferThisType(), material.damage * propotion);
         capacity += material.capacity;
+        if (capacity > maxCapacity)
+            capacity = maxCapacity;
 
         best = FindMax();
         SetColor();
@@ -154,7 +162,8 @@ public class TypeOfMagic
     }
 
     public DamageContainer ReferDamage() {
-        DamageContainer answer = new DamageContainer(best.a, status[best.a], best.b, status[best.b]);
+        DamageContainer answer = new DamageContainer(best.a, status[best.a],
+            best.b, status[best.b]);
         return answer;
     }
 

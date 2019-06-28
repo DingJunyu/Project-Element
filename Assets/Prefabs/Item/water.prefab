@@ -94,11 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeRandom: 0
+  textBar: {fileID: 3908411201264648975, guid: 6f1fa6282f423ab408100a6d47cc7aae, type: 3}
   capacity: 0
-  Damage: 0
+  damage: 0
   choosed: 0
   setMyType: 0
-  name: Water
+  thisName: water
 --- !u!61 &411387881642293403
 BoxCollider2D:
   m_ObjectHideFlags: 0

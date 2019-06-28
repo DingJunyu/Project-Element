@@ -54,20 +54,22 @@ public class GameManager : MonoBehaviour
     }
 
     private void Click() {//クリック事件はここで解決
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)) {
             RaycastHit2D hit = 
                 Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),
                 Vector2.zero);
 
-            if (hit.collider != null)
-            {
+            if (hit.collider != null) {
                 if (hit.collider.gameObject.tag == "Item_Material"){
                     choosedA = hit.collider.gameObject;
                 }
                 if (hit.collider.gameObject.tag == "tube") {
                     choosedB = hit.collider.gameObject;
                 }
+            }
+            else{//選択をクリア
+                choosedA = default;
+                choosedB = default;
             }
         }
     }

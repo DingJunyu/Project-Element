@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: -1252120600635106375}
   m_Layer: 0
   m_Name: testTube
-  m_TagString: Untagged
+  m_TagString: tube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02bba9b7fc03274bb02d4e37ddf9764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textBar: {fileID: 3908411201264648975, guid: 6f1fa6282f423ab408100a6d47cc7aae, type: 3}
 --- !u!61 &-1252120600635106375
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -6,23 +6,34 @@ public class Material : MonoBehaviour
 {
     public bool typeRandom;
 
+    public GameObject textBar;//textBarのデータを保存する
+    private GameObject realTextBar;//実際生成したtextBar
+
+    private ColorBox crBox;
+
     /*属性ダメージ部分*/
     public int capacity;
     private int thisType;
     public int ReferThisType() { return thisType; }
-    public float Damage;
+    public float damage;
 
     /*ダメージ形部分*/
-    private int shapeName;
-    private int stepName;
+    private int shapeType;
+    private int stepType;
     private int strength;
     private float speed;
     private bool fog = false;
 
+    public int ReferShapeType() { return shapeType; }
+    public int ReferStepType() { return stepType; }
+    public int ReferStrength() { return strength; }
+    public float ReferSpeed() { return speed; }
+    public bool ReferFog() { return fog; }
+
     public bool choosed;
 
     public int setMyType;
-    public string name;
+    public string thisName;
 
     enum randomStandard {
         better,
@@ -30,9 +41,13 @@ public class Material : MonoBehaviour
         weak
     }
 
+    public Material() {
+        crBox = new ColorBox();
+    }
+
     private void Start() {
         capacity = Random.Range(15, 50);
-        Damage = (float)capacity * Random.Range(0f,1.6f);
+        damage = (float)capacity * Random.Range(0f,1.6f);
 
         //範囲チェック付きます、正しいデータを付けた限りセットを有効化にする
         if (typeRandom || setMyType > (int)TypeOfMagic.Type.noneType ||
@@ -72,7 +87,7 @@ public class Material : MonoBehaviour
             case (int)randomStandard.weak: ranLe = 4; ranRi = 8; break;
         }
 
-        shapeName = str;
+        shapeType = str;
         strength = Random.Range(ranLe, ranRi);
     }
 
@@ -105,7 +120,7 @@ public class Material : MonoBehaviour
             case (int)randomStandard.weak: ranLe = 4; ranRi = 8; break;
         }
 
-        stepName = str;
+        stepType = str;
         strength = Random.Range(ranLe, ranRi);
     }
 
@@ -181,8 +196,31 @@ public class Material : MonoBehaviour
              (int)randomStandard.weak);
     }
 
-    private void OnMouseOver()
-    {
-        Debug.Log(name);
+    private void OnMouseOver() {
+        if (realTextBar != default)
+            return;
+
+        realTextBar = textBar;//textBarは空きじゃないので
+
+        //生成したＵＩをrealTextBarに記録する
+        realTextBar = Instantiate(realTextBar, 
+            transform.position, Quaternion.identity);
+
+        realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
+            text = thisName;
+        realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
+            color = crBox.GetThis(thisType, 0.7f,(int)TypeOfMagic.Type.noneType,0.3f);
+        realTextBar.gameObject.transform.Find("Status").GetComponent<UnityEngine.UI.Text>().
+            text = string.Format("効果量：{0:.00}", damage) + " " +
+            string.Format("速度 {0:.00}", speed);
+        realTextBar.gameObject.transform.Find("Type").GetComponent<UnityEngine.UI.Text>().
+            text = TypeOfAttack.Shape.shapeTypeName[shapeType] + " " +
+            TypeOfAttack.SpeedAndSteps.stepTypeName[stepType] + " " +
+            strength ;
+    }
+
+    private void OnMouseExit() {
+        Destroy(realTextBar);
+        realTextBar = default;  
     }
 }
