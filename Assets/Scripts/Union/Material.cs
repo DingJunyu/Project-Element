@@ -11,6 +11,42 @@ public class Material : MonoBehaviour
 
     private ColorBox crBox;
 
+    private static readonly string[] saveName = {
+        "capacity",
+        "thisType",
+        "damage",
+        "shapeType",
+        "stepType",
+        "strength",
+        "speed",
+        "fog"
+    };
+
+
+    public void Save() {
+        PlayerPrefs.SetInt(serialNum + saveName[0], capacity);
+        PlayerPrefs.SetInt(serialNum + saveName[1], thisType);
+        PlayerPrefs.SetFloat(serialNum + saveName[2], damage);
+        PlayerPrefs.SetInt(serialNum + saveName[3], shapeType);
+        PlayerPrefs.SetInt(serialNum + saveName[4], stepType);
+        PlayerPrefs.SetInt(serialNum + saveName[5], strength);
+        PlayerPrefs.SetFloat(serialNum + saveName[6], speed);
+        if (fog)
+            PlayerPrefs.SetInt(serialNum + saveName[7], 1);
+    }
+
+    public void Load() {
+        capacity = PlayerPrefs.GetInt(serialNum + saveName[0]);
+        thisType = PlayerPrefs.GetInt(serialNum + saveName[1]);
+        damage = PlayerPrefs.GetFloat(serialNum + saveName[2]);
+        shapeType = PlayerPrefs.GetInt(serialNum + saveName[3]);
+        stepType = PlayerPrefs.GetInt(serialNum + saveName[4]);
+        strength = PlayerPrefs.GetInt(serialNum + saveName[5]);
+        speed = PlayerPrefs.GetFloat(serialNum + saveName[6]);
+        if (PlayerPrefs.HasKey(serialNum + saveName[7]))
+            fog = true;
+    }
+
     /*属性ダメージ部分*/
     public int capacity;
     private int thisType;
@@ -35,6 +71,8 @@ public class Material : MonoBehaviour
     public int setMyType;
     public string thisName;
 
+    private string serialNum;
+
     enum randomStandard {
         better,
         medium,
@@ -47,20 +85,30 @@ public class Material : MonoBehaviour
 
     private void Start() {
         capacity = Random.Range(15, 50);
-        damage = (float)capacity * Random.Range(0f,1.6f);
+        damage = (float)capacity * Random.Range(0f, 1.6f);
 
         //範囲チェック付きます、正しいデータを付けた限りセットを有効化にする
         if (typeRandom || setMyType > (int)TypeOfMagic.Type.noneType ||
             setMyType < (int)TypeOfMagic.Type.water)
-            thisType = Random.Range(0,5);
+            thisType = Random.Range(0, 5);
         else
             thisType = setMyType;
 
         SetShapeAndType();//属性に基づいてデータを生成する
+
+
+        RandomString randomString = new RandomString();
+
+        serialNum = randomString.GenerateCheckCode32();
+        while ((PlayerPrefs.HasKey(serialNum)))
+        {
+            serialNum = randomString.GenerateCheckCode32();
+        }
+        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.testTube);
     }
 
-    void SetOneShape(int ranA,int ranB,
-        int volA,int volB,int volC) {
+    void SetOneShape(int ranA, int ranB,
+        int volA, int volB, int volC) {
         int randNum = Random.Range(0, 100);
         /*ここの数字はすべて確率であり*/
         if (randNum < ranA) {
@@ -77,7 +125,7 @@ public class Material : MonoBehaviour
         }
     }
 
-    void SetShapeName(int str,int randSta) {
+    void SetShapeName(int str, int randSta) {
         int ranLe = 0;
         int ranRi = 5;
 
@@ -157,7 +205,7 @@ public class Material : MonoBehaviour
         SetOneStep(70, 90, (int)randomStandard.better,
              (int)randomStandard.weak,
              (int)randomStandard.weak);
-    
+
     }
 
     private void ANewFireMaterial() {//火タイプの初期化
@@ -203,24 +251,25 @@ public class Material : MonoBehaviour
         realTextBar = textBar;//textBarは空きじゃないので
 
         //生成したＵＩをrealTextBarに記録する
-        realTextBar = Instantiate(realTextBar, 
+        realTextBar = Instantiate(realTextBar,
             transform.position, Quaternion.identity);
 
         realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
             text = thisName;
         realTextBar.gameObject.transform.Find("Name").GetComponent<UnityEngine.UI.Text>().
-            color = crBox.GetThis(thisType, 0.7f,(int)TypeOfMagic.Type.noneType,0.3f);
+            color = crBox.GetThis(thisType, 0.7f, (int)TypeOfMagic.Type.noneType, 0.3f);
         realTextBar.gameObject.transform.Find("Status").GetComponent<UnityEngine.UI.Text>().
             text = string.Format("効果量：{0:.00}", damage) + " " +
             string.Format("速度 {0:.00}", speed);
         realTextBar.gameObject.transform.Find("Type").GetComponent<UnityEngine.UI.Text>().
             text = TypeOfAttack.Shape.shapeTypeName[shapeType] + " " +
             TypeOfAttack.SpeedAndSteps.stepTypeName[stepType] + " " +
-            strength ;
+            strength;
     }
 
     private void OnMouseExit() {
         Destroy(realTextBar);
-        realTextBar = default;  
+        realTextBar = default;
     }
+
 }

@@ -177,9 +177,9 @@ public class TypeOfMagic
     public void Load(string code) {
         for (int i = 0; i < (int)Type.type_amount; i++)
         {
-            PlayerPrefs.GetFloat(code + name[i], status[i]);
+            status[i] = PlayerPrefs.GetFloat(code + name[i]);
         }
-        PlayerPrefs.GetInt(code + "capacity", capacity);
+        capacity = PlayerPrefs.GetInt(code + "capacity");
     }
 
     public void Delete(string code) {

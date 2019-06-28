@@ -60,6 +60,10 @@ public class TypeOfAttack
             }
             return true;
         }
+
+        void Save(string str) {
+            PlayerPrefs.SetInt(str + "rayOfLight", rayOfLight);
+        }
     }
 
     public class SpeedAndSteps {
@@ -137,11 +141,11 @@ public class TypeOfAttack
         shape = new Shape();
     }
 
-    public void InputNewMaterials(Material material){
+    public void InputNewMaterials(Material material) {
         shape.inputNew(material.ReferShapeType(), material.ReferStrength());
         speedAndSteps.inputNew(material.ReferStepType(), material.ReferStrength(),
             material.ReferSpeed());
-        if (material.ReferFog()&&!isFog) {
+        if (material.ReferFog() && !isFog) {
             if (Random.Range(0, 100) > 60)
                 isFog = true;
         }
@@ -158,5 +162,9 @@ public class TypeOfAttack
 
     public float ReferSpeed() {
         return speedAndSteps.ReferSpeed();
+    }
+
+    public void save() {
+
     }
 }

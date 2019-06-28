@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveUnit : MonoBehaviour
+public class SaveUnit
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    GameObject here;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public SaveUnit(string str) {
+        if (!PlayerPrefs.HasKey(str)) {
+            here = default;
+        }
     }
 }

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum saveData { 
+        material,
+        testTube
+    }
+
     Material materialChoosed;
     TestTube testTubeChoosed;
 

@@ -48,7 +48,7 @@ public class TestTube : MonoBehaviour
         while ((PlayerPrefs.HasKey(serialNum))) {
             serialNum = randomString.GenerateCheckCode32();
         }
-        PlayerPrefs.SetInt(serialNum, 1);
+        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.testTube);
     }
 
     //読み込むの時に使う
