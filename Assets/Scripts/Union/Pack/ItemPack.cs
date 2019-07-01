@@ -14,6 +14,8 @@ public class ItemPack : MonoBehaviour
     private const float nextX = 0.5f;
     private const int MaxOnRow = 6;
     private const float nextY = 0.5f;
+    private const float startX = -1f;
+    private const float startY = 0.9f;
 
     bool isAEmptyPack;//
 
