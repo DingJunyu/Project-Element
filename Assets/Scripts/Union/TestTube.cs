@@ -66,6 +66,7 @@ public class TestTube : MonoBehaviour
         CheckColor();
         if (changed) { Save(); }
         if (used) { DeleteThis(); }//使い終わったらマネージャーの方で削除してください
+        SetReagent();   
     }
 
     private void CheckColor() {
@@ -82,11 +83,11 @@ public class TestTube : MonoBehaviour
     }
 
     //データ操作
-    void Save() {
+    public void Save() {
         Type.Save(serialNum);
     }
 
-    void Load() {
+    private void Load() {
         Type.Load(serialNum);
     }
 
@@ -111,8 +112,15 @@ public class TestTube : MonoBehaviour
         return success;
     }
 
-    private void OnMouseOver()
-    {
+    public void SetSize(float multi) {
+        transform.localScale = new Vector3(multi, multi, 1);
+    }
+
+    private void OnMouseOver() {
+        ANewTextBar();
+    }
+
+    private void ANewTextBar() {
         if (realTextBar != default)
             return;
 
@@ -130,7 +138,7 @@ public class TestTube : MonoBehaviour
             0.3f);
 
         realTextBar.gameObject.transform.Find("Status").GetComponent<UnityEngine.UI.Text>().
-            text = TypeOfMagic.name_jp[Type.ReferDamage().typeA] +  
+            text = TypeOfMagic.name_jp[Type.ReferDamage().typeA] +
             string.Format("{0:.00}", Type.ReferDamage().typeADam) + " " +
             TypeOfMagic.name_jp[Type.ReferDamage().typeB] +
             string.Format("{0:.00}", Type.ReferDamage().typeBDam) + " " +
@@ -148,5 +156,23 @@ public class TestTube : MonoBehaviour
     {
         Destroy(realTextBar);
         realTextBar = default;
+    }
+
+    private void SetReagent() {
+        float per = Type.ReferCapcityPercentage();
+        reagent.localScale = new Vector3(1f, per, 1f);
+        if (per <= 0.2f) {
+            reagent.localPosition = new Vector3(0f, - 0.16f - (0.2f - per) * 0.2f, 0f);
+        }
+        else if (per != 1f) {
+            reagent.localPosition = new Vector3(0f, - 0.005f - (1f - per) * 0.2f, 0f);
+        }
+        else
+            reagent.localPosition=new Vector3(0f,0f,0f);
+    }
+
+    ~TestTube() {
+        if (realTextBar != default)
+            Destroy(realTextBar);
     }
 }

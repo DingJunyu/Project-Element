@@ -15,19 +15,15 @@ public class GameManager : MonoBehaviour
     public GameObject choosedA;
     public GameObject choosedB;
 
+    public GameObject pack;
+
     /*単独のファイルにまとめる*/
     //必要のは：倉庫(200)、パック(50)、試験管パック(12)
-    private class MyGameObject {
-        public GameObject thisGameObject;
-        string SerialNumber;
-    }
-
-    List<MyGameObject> MyItemList;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -58,7 +54,14 @@ public class GameManager : MonoBehaviour
         choosedB = default;//選択を無効化にする
     }
 
+    /******************************************************/
+    /*マウス事件*/
+    /******************************************************/
     private void Click() {//クリック事件はここで解決
+        PutMaterialIntoTube();
+    }
+
+    private void PutMaterialIntoTube() {
         if (Input.GetMouseButtonDown(0)) {
             RaycastHit2D hit = 
                 Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),
@@ -69,6 +72,7 @@ public class GameManager : MonoBehaviour
                     choosedA = hit.collider.gameObject;
                 }
                 if (hit.collider.gameObject.tag == "tube") {
+                    if (choosedA != default) 
                     choosedB = hit.collider.gameObject;
                 }
             }

@@ -61,6 +61,7 @@ public class TypeOfMagic
 
     int capacity;
     public int ReferCapacity() { return capacity; }
+    public float ReferCapcityPercentage() { return (float)capacity / (float)maxCapacity; }
     const int maxCapacity = 100;
     public bool CanIPutNewResIn() { return capacity < maxCapacity; }
 

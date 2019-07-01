@@ -47,6 +47,19 @@ public class Material : MonoBehaviour
             fog = true;
     }
 
+    public void GiveMeANewSerialCode(string code) {
+        PlayerPrefs.DeleteKey(serialNum);
+        serialNum = code;
+        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);
+        Load();
+    }
+
+    public void DeleteThis() {
+        for (int i = 0; i < 8; i++) {
+            PlayerPrefs.DeleteKey(serialNum + saveName[i]);
+        }
+    }
+
     /*属性ダメージ部分*/
     public int capacity;
     private int thisType;
@@ -100,11 +113,10 @@ public class Material : MonoBehaviour
         RandomString randomString = new RandomString();
 
         serialNum = randomString.GenerateCheckCode32();
-        while ((PlayerPrefs.HasKey(serialNum)))
-        {
+        while ((PlayerPrefs.HasKey(serialNum))) {
             serialNum = randomString.GenerateCheckCode32();
         }
-        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.testTube);
+        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);
     }
 
     void SetOneShape(int ranA, int ranB,
@@ -245,6 +257,10 @@ public class Material : MonoBehaviour
     }
 
     private void OnMouseOver() {
+        ANewTextBar();
+    }
+
+    private void ANewTextBar() {
         if (realTextBar != default)
             return;
 
@@ -272,4 +288,8 @@ public class Material : MonoBehaviour
         realTextBar = default;
     }
 
+    ~Material() {
+        if(realTextBar!=default)
+            Destroy(realTextBar);
+    }
 }
