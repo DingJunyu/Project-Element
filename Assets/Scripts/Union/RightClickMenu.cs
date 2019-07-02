@@ -30,6 +30,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler
     const float startY = 60f;
     const float defaultHeight = 200f;
 
+    //最大7個ですが、同じ風に追加しても構わない
     public GameObject button1;
     public GameObject button2;
     public GameObject button3;
@@ -58,6 +59,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler
         if (button7 != default) amount++;
     }
 
+    //ボタン数に応じて背景の大きさを調整する
     private void SetPlateSize() {
         CountButtonNum();
         plate = transform.Find("Plate").GetComponent<RectTransform>();

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Material : MonoBehaviour
 {
+    //公的訪問できる部分
+
     public bool typeRandom;
 
     public GameObject textBar;//textBarのデータを保存する
@@ -11,8 +13,9 @@ public class Material : MonoBehaviour
     public GameObject rightClickMenu;
     private GameObject realRightClickMenu;
 
-    private ColorBox crBox;
 
+    //多分、パックの中にテンプレートを使って全部有効にするので、
+    //テンプレートの部分はすべてのメソッドを無効化にする
     public bool isThisTemplate = false;
 
     const float mouseOffsetOnX = 45f;
@@ -72,6 +75,8 @@ public class Material : MonoBehaviour
     }
 
     /*属性ダメージ部分*/
+    private ColorBox crBox;
+
     public int capacity;
     private int thisType;
     public int ReferThisType() { return thisType; }
@@ -84,6 +89,7 @@ public class Material : MonoBehaviour
     private float speed;
     private bool fog = false;
 
+    /*メソッド部分*/
     public int ReferShapeType() { return shapeType; }
     public int ReferStepType() { return stepType; }
     public int ReferStrength() { return strength; }
@@ -97,6 +103,7 @@ public class Material : MonoBehaviour
 
     private string serialNum;
 
+    //乱数を生成する基準
     enum randomStandard {
         better,
         medium,
@@ -271,18 +278,19 @@ public class Material : MonoBehaviour
     }
 
     private void OnMouseOver() {
+        //右クリックメニューを使っていない時に詳細を描画する
         if (!isThisTemplate && realRightClickMenu == default) 
             ANewTextBar();
+        //右クリックメニューを呼び出したら詳細画面を閉じる
         if (realRightClickMenu != default && realTextBar != default) {
             Destroy(realTextBar);
             realTextBar = default;
         }
-
-        Click();
+        Click();//右クリック事件
     }
 
     private void ANewTextBar() {
-        if (realTextBar != default)
+        if (realTextBar != default)//メニューがすでにある時に生成しない
             return;
 
         realTextBar = textBar;//textBarは空きじゃないので
