@@ -161,6 +161,8 @@ public class TestTube : MonoBehaviour
     private void SetReagent() {
         float per = Type.ReferCapcityPercentage();
         reagent.localScale = new Vector3(1f, per, 1f);
+        //画像が変更されない限り、ここの数字を変更する必要がない
+        //y座標:起始座標＋パーセンテージに応じて変化値
         if (per <= 0.2f) {
             reagent.localPosition = new Vector3(0f, - 0.16f - (0.2f - per) * 0.2f, 0f);
         }

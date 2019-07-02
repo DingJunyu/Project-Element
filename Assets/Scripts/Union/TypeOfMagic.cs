@@ -23,7 +23,6 @@ public class TypeOfMagic
 
     public TypeOfMagic() {
         for (int i = 0; i < (int)Type.type_amount; i++) status[i] = 0f;
-        damage = 0;
         capacity = 0;
         crBox = new ColorBox();
         best = new TwoNum();
@@ -32,7 +31,6 @@ public class TypeOfMagic
 
     public TypeOfMagic(int thisType,float Damage,int capacity) {
         for (int i = 0; i < (int)Type.type_amount; i++) status[i] = 0f;
-        damage = 0;
         capacity = 0;
         crBox = new ColorBox();
         best = new TwoNum();
@@ -64,8 +62,6 @@ public class TypeOfMagic
     public float ReferCapcityPercentage() { return (float)capacity / (float)maxCapacity; }
     const int maxCapacity = 100;
     public bool CanIPutNewResIn() { return capacity < maxCapacity; }
-
-    float damage;//ダメージ
 
     /*色関係*/
     ColorBox crBox;

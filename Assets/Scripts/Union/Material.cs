@@ -8,8 +8,16 @@ public class Material : MonoBehaviour
 
     public GameObject textBar;//textBarのデータを保存する
     private GameObject realTextBar;//実際生成したtextBar
+    public GameObject rightClickMenu;
+    private GameObject realRightClickMenu;
 
     private ColorBox crBox;
+
+    public bool isThisTemplate = false;
+
+    const float mouseOffsetOnX = 45f;
+    const float mouseOffsetOnY = -30f;
+
 
     private static readonly string[] saveName = {
         "capacity",
@@ -21,7 +29,6 @@ public class Material : MonoBehaviour
         "speed",
         "fog"
     };
-
 
     public void Save() {
         PlayerPrefs.SetInt(serialNum + saveName[0], capacity);
@@ -58,6 +65,10 @@ public class Material : MonoBehaviour
         for (int i = 0; i < 8; i++) {
             PlayerPrefs.DeleteKey(serialNum + saveName[i]);
         }
+    }
+
+    public void CopyFromThis(Material material) {
+        this.shapeType = material.shapeType;
     }
 
     /*属性ダメージ部分*/
@@ -117,6 +128,9 @@ public class Material : MonoBehaviour
             serialNum = randomString.GenerateCheckCode32();
         }
         PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);
+    }
+
+    private void LateUpdate() {
     }
 
     void SetOneShape(int ranA, int ranB,
@@ -257,7 +271,14 @@ public class Material : MonoBehaviour
     }
 
     private void OnMouseOver() {
-        ANewTextBar();
+        if (!isThisTemplate && realRightClickMenu == default) 
+            ANewTextBar();
+        if (realRightClickMenu != default && realTextBar != default) {
+            Destroy(realTextBar);
+            realTextBar = default;
+        }
+
+        Click();
     }
 
     private void ANewTextBar() {
@@ -284,12 +305,29 @@ public class Material : MonoBehaviour
     }
 
     private void OnMouseExit() {
-        Destroy(realTextBar);
-        realTextBar = default;
+        if (!isThisTemplate) {
+            Destroy(realTextBar);
+            realTextBar = default;
+        }
     }
 
     ~Material() {
         if(realTextBar!=default)
             Destroy(realTextBar);
+    }
+
+    private void Click() {
+        if (Input.GetMouseButtonDown(1)) {
+            if (realRightClickMenu != default)
+                return;
+            realRightClickMenu = Instantiate(rightClickMenu, transform);
+
+            Vector3 vector3 = Input.mousePosition;
+
+            vector3.x += mouseOffsetOnX;
+            vector3.y += mouseOffsetOnY;
+
+            realRightClickMenu.transform.position = vector3;
+        }
     }
 }

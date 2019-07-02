@@ -8,8 +8,8 @@ public class ItemPack : MonoBehaviour
     public GameObject itemTemplate;
 
     private int itemNum;
-    private const int maxTubeNum = 12;
-    public bool ReferSpace() { return itemNum < maxTubeNum; }
+    private const int maxItemNum = 12;
+    public bool ReferSpace() { return itemNum < maxItemNum; }
 
     private const float nextX = 0.5f;
     private const int MaxOnRow = 6;
@@ -19,13 +19,13 @@ public class ItemPack : MonoBehaviour
 
     bool isAEmptyPack;//
 
-    GameObject[] testTubes;
+    GameObject[] itemHere;
 
     string[] testTubesSerial;
 
     public ItemPack() {
-        testTubes = new GameObject[maxTubeNum];
-        testTubesSerial = new string[maxTubeNum];
+        itemHere = new GameObject[maxItemNum];
+        testTubesSerial = new string[maxItemNum];
 
         isAEmptyPack = true;
     }
@@ -37,14 +37,14 @@ public class ItemPack : MonoBehaviour
         if (!isAEmptyPack) Load();//データがある時読み込む
 
         itemNum = 2;
-        testTubes[0] = Instantiate(itemTemplate, transform);
-        testTubes[0].transform.SetParent(transform);
-        testTubes[0].transform.localPosition = new Vector3(1f, 0f, 0f);
+        itemHere[0] = Instantiate(itemTemplate, transform);
+        itemHere[0].transform.SetParent(transform);
+        itemHere[0].transform.localPosition = new Vector3(1f, 0f, 0f);
 
-        testTubes[1] = Instantiate(itemTemplate,
+        itemHere[1] = Instantiate(itemTemplate,
             transform.position, Quaternion.identity);
-        testTubes[1].transform.SetParent(transform);
-        testTubes[1].transform.localPosition = new Vector3(2f, 0f, 0f);
+        itemHere[1].transform.SetParent(transform);
+        itemHere[1].transform.localPosition = new Vector3(2f, 0f, 0f);
     }
 
     // Update is called once per frame
@@ -57,7 +57,7 @@ public class ItemPack : MonoBehaviour
 
         for (int i = 0; i < itemNum; i++)
         {
-            testTubes[i].GetComponent<Material>().Save();//データを保存する
+            itemHere[i].GetComponent<Material>().Save();//データを保存する
 
             PlayerPrefs.SetString("ItemInpack" + i, testTubesSerial[i]);//番号を保存する
         }
@@ -71,12 +71,12 @@ public class ItemPack : MonoBehaviour
         for (int i = 0; i < itemNum; i++)
         {
             //新しいオブジェクトを生成する
-            testTubes[i] = Instantiate(itemTemplate,
+            itemHere[i] = Instantiate(itemTemplate,
                 transform);
             //保存されたデータを読み込む
-            testTubes[i].GetComponent<Material>().
+            itemHere[i].GetComponent<Material>().
                 GiveMeANewSerialCode(PlayerPrefs.GetString("ItemInpack" + i));
-            testTubes[1].transform.localPosition =
+            itemHere[1].transform.localPosition =
                 new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
         }
     }
@@ -85,7 +85,7 @@ public class ItemPack : MonoBehaviour
         PlayerPrefs.DeleteKey("ItemMyPack");
         for (int i = 0; i < itemNum; i++)
         {
-            testTubes[i].GetComponent<Material>().DeleteThis();
+            itemHere[i].GetComponent<Material>().DeleteThis();
         }
         PlayerPrefs.DeleteKey("ItemAmountInMyPack");
     }
@@ -98,13 +98,25 @@ public class ItemPack : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void InputNew() { 
+    public bool InputNew(ref GameObject material) {
+        int number = 0;
+        for (int i = 0; i < maxItemNum; i++) {
+            if (itemHere[i] == default) {
+                number = i; break;
+            }
+            if (i == maxItemNum - 1) {//空いてるところがない場合
+                return false;
+            }
+        }
+        itemHere[number] = material;
+        itemHere[number].transform.parent = transform;
 
+        return true;
     }
 
     private void CheckAndSetPos() {
         for (int i = 0; i < itemNum; i++) {
-            testTubes[i].transform.localPosition =
+            itemHere[i].transform.localPosition =
                new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
         }
     }
