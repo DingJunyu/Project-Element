@@ -16,18 +16,10 @@ public class MyCharacterController : CreatureController
 
     private void GetOrder() {
         if (Input.GetKey(KeyCode.RightArrow)) {
-            transform.position = new Vector3(transform.position.x + .08f,
-                transform.position.y);
+            MoveOnX(true);
         }
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            transform.position = new Vector3(transform.position.x - .08f,
-                transform.position.y);
+            MoveOnX(false);
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            Debug.Log("102");
     }
 }

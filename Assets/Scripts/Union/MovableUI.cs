@@ -11,7 +11,14 @@ public class MovableUI : MonoBehaviour
     private Camera mainCamera;
     private RectTransform plateMesh;
 
+    private GameObject realParent;
+
     private Vector2 size;
+
+    private void Awake()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +36,8 @@ public class MovableUI : MonoBehaviour
     {
         if (moveWithMouse)
             MoveWithMouse();
+        if (moveWithObject)
+            MoveWithObject();
     }
 
     void MoveWithMouse() {
@@ -53,6 +62,23 @@ public class MovableUI : MonoBehaviour
         if (realVec.y/20 < -mainCamera.pixelHeight/2) {
             pos.y += plateMesh.sizeDelta.y;
         }
+
+        //座標を更新する
+        transform.GetComponent<RectTransform>().localPosition =
+            pos;
+    }
+
+    void MoveWithObject() {
+        Vector2 pos;
+
+        //座標を計算する
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.GetComponent<RectTransform>(),
+            realParent.transform.position,
+            null, out pos);
+
+        pos.x += plateMesh.sizeDelta.x / 2;
+        pos.y -= plateMesh.sizeDelta.y / 2;
 
         //座標を更新する
         transform.GetComponent<RectTransform>().localPosition =
