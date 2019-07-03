@@ -8,6 +8,8 @@ TagManager:
   - tube
   - Item_Material
   - Item_Mark
+  - Ground
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Player
+  - Item
   - 
   - 
   - 
