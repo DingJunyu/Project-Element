@@ -328,6 +328,7 @@ public class Material : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) {
             if (realRightClickMenu != default)
                 return;
+            //このメニューの親はアイテムではありません
             realRightClickMenu = Instantiate(rightClickMenu, transform);
 
             Vector3 vector3 = Input.mousePosition;
