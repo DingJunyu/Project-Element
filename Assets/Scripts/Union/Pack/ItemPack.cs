@@ -110,6 +110,7 @@ public class ItemPack : MonoBehaviour
         }
         itemHere[number] = material;
         itemHere[number].transform.parent = transform;
+        itemHere[number].GetComponent<Rigidbody2D>().isKinematic = true;//rigidbodyを無効化
 
         return true;
     }

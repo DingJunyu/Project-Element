@@ -20,14 +20,18 @@ public class TryCollision : MonoBehaviour {
                 return;
 
             realShowMeTheKey = Instantiate(showMeTheKey,
-                parent.transform.position, Quaternion.identity);
+                parent.transform);
+
+            parent.GetComponent<Material>().iCanTakeIt();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
-            if (realShowMeTheKey != default)
+            if (realShowMeTheKey != default) { 
                 Destroy(realShowMeTheKey);
+                parent.GetComponent<Material>().iCannotTakeIt();
+            }
         }
     }
 }

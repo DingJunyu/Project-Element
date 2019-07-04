@@ -15,9 +15,12 @@ public class MovableUI : MonoBehaviour
 
     private Vector2 size;
 
-    private void Awake()
-    {
+    const float itemWidth = 20f;
+    const float itemHeight = 20f;
 
+    private void Awake() {
+        if (transform.parent != default)
+            realParent = transform.parent.gameObject;
     }
 
     // Start is called before the first frame update
@@ -36,7 +39,7 @@ public class MovableUI : MonoBehaviour
     {
         if (moveWithMouse)
             MoveWithMouse();
-        if (moveWithObject)
+        if (moveWithObject && realParent != default)
             MoveWithObject();
     }
 
@@ -70,15 +73,19 @@ public class MovableUI : MonoBehaviour
 
     void MoveWithObject() {
         Vector2 pos;
+        Vector2 tempPos;
+
+        tempPos = RectTransformUtility.WorldToScreenPoint(mainCamera,
+            realParent.transform.position);
 
         //座標を計算する
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvas.GetComponent<RectTransform>(),
-            realParent.transform.position,
+            tempPos,
             null, out pos);
 
-        pos.x += plateMesh.sizeDelta.x / 2;
-        pos.y -= plateMesh.sizeDelta.y / 2;
+        pos.x += itemWidth;
+        pos.y += itemHeight;
 
         //座標を更新する
         transform.GetComponent<RectTransform>().localPosition =

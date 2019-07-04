@@ -21,6 +21,10 @@ public class Material : MonoBehaviour
     const float mouseOffsetOnX = 45f;
     const float mouseOffsetOnY = -30f;
 
+    private bool canITakeIt;
+    public void iCanTakeIt() { canITakeIt = true; }
+    public void iCannotTakeIt() { canITakeIt = false; }
+
 
     private static readonly string[] saveName = {
         "capacity",
@@ -137,7 +141,10 @@ public class Material : MonoBehaviour
         PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);
     }
 
-    private void LateUpdate() {
+    private void Update() {
+        if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
+            Debug.Log("take item");
+        }
     }
 
     void SetOneShape(int ranA, int ranB,
@@ -325,18 +332,20 @@ public class Material : MonoBehaviour
     }
 
     private void Click() {
-        if (Input.GetMouseButtonDown(1)) {
-            if (realRightClickMenu != default)
-                return;
-            //このメニューの親はアイテムではありません
-            realRightClickMenu = Instantiate(rightClickMenu, transform);
+        if (GetComponent<Rigidbody2D>().isKinematic)
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (realRightClickMenu != default)
+                    return;
+                //このメニューの親はアイテムではありません
+                realRightClickMenu = Instantiate(rightClickMenu, transform);
 
-            Vector3 vector3 = Input.mousePosition;
+                Vector3 vector3 = Input.mousePosition;
 
-            vector3.x += mouseOffsetOnX;
-            vector3.y += mouseOffsetOnY;
+                vector3.x += mouseOffsetOnX;
+                vector3.y += mouseOffsetOnY;
 
-            realRightClickMenu.transform.position = vector3;
-        }
+                realRightClickMenu.transform.position = vector3;
+            }
     }
 }

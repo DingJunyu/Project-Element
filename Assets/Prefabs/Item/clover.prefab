@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 594636130}
   - component: {fileID: 594636132}
   - component: {fileID: 594636131}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ItemTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db41d8615b127047920aa571a678f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showMeTheKey: {fileID: 4075106770221127577, guid: deb02111a5b3b544e9eb75db887b1f59,
+    type: 3}
 --- !u!1 &2917339760193591277
 GameObject:
   m_ObjectHideFlags: 0

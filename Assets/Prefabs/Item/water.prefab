@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2060187787}
   - component: {fileID: 2060187789}
   - component: {fileID: 2060187788}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ItemTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06784652, y: 0.018714547}
+  m_Offset: {x: 0.007315211, y: 0.018714547}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.38668206, y: 0.27850056}
+  m_Size: {x: 0.26561946, y: 0.27850056}
   m_EdgeRadius: 0
 --- !u!114 &2060187788
 MonoBehaviour:
@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db41d8615b127047920aa571a678f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showMeTheKey: {fileID: 4075106770221127577, guid: deb02111a5b3b544e9eb75db887b1f59,
+    type: 3}
 --- !u!1 &5577870180053559011
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +190,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.022898182, y: 0}
+  m_Offset: {x: 0.0007880032, y: 0.017764702}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -199,7 +201,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.27420363, y: 0.32}
+  m_Size: {x: 0.22683126, y: 0.23709828}
   m_EdgeRadius: 0
 --- !u!50 &-660750846295120636
 Rigidbody2D:
