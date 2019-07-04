@@ -143,7 +143,7 @@ public class Material : MonoBehaviour
 
     private void Update() {
         if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
-            Debug.Log("take item");
+            GameObject.Find("MyPack").GetComponent<ItemPack>().InputNew(transform.gameObject);
         }
     }
 
@@ -169,6 +169,7 @@ public class Material : MonoBehaviour
         int ranLe = 0;
         int ranRi = 5;
 
+        //ランダムデータを生成する
         switch (randSta) {
             case (int)randomStandard.better: ranLe = 12; ranRi = 16; break;
             case (int)randomStandard.medium: ranLe = 8; ranRi = 12; break;

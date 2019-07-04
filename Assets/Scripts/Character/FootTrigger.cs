@@ -10,7 +10,6 @@ public class FootTrigger : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        Debug.Log("!");
         transform.parent.transform.GetComponent<MyCharacterController>().
             RemoveOnTheGround();
     }

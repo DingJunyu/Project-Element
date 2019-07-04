@@ -7,6 +7,8 @@ public class ItemPack : MonoBehaviour
     /*すべてのアイテムをここに置くか。。。*/
     public GameObject itemTemplate;
 
+    private SpriteRenderer plateMesh;
+
     private int itemNum;
     private const int maxItemNum = 12;
     public bool ReferSpace() { return itemNum < maxItemNum; }
@@ -28,6 +30,7 @@ public class ItemPack : MonoBehaviour
         testTubesSerial = new string[maxItemNum];
 
         isAEmptyPack = true;
+        itemNum = 0;
     }
 
     // Start is called before the first frame update
@@ -36,15 +39,17 @@ public class ItemPack : MonoBehaviour
 
         if (!isAEmptyPack) Load();//データがある時読み込む
 
-        itemNum = 2;
-        itemHere[0] = Instantiate(itemTemplate, transform);
-        itemHere[0].transform.SetParent(transform);
-        itemHere[0].transform.localPosition = new Vector3(1f, 0f, 0f);
+        plateMesh = GetComponent<SpriteRenderer>();
 
-        itemHere[1] = Instantiate(itemTemplate,
-            transform.position, Quaternion.identity);
-        itemHere[1].transform.SetParent(transform);
-        itemHere[1].transform.localPosition = new Vector3(2f, 0f, 0f);
+        //itemNum = 2;
+        //itemHere[0] = Instantiate(itemTemplate, transform);
+        //itemHere[0].transform.SetParent(transform);
+        //itemHere[0].transform.localPosition = new Vector3(1f, 0f, 0f);
+
+        //itemHere[1] = Instantiate(itemTemplate,
+        //    transform.position, Quaternion.identity);
+        //itemHere[1].transform.SetParent(transform);
+        //itemHere[1].transform.localPosition = new Vector3(2f, 0f, 0f);
     }
 
     // Update is called once per frame
@@ -98,8 +103,9 @@ public class ItemPack : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public bool InputNew(ref GameObject material) {
+    public bool InputNew(GameObject material) {
         int number = 0;
+        itemNum++;
         for (int i = 0; i < maxItemNum; i++) {
             if (itemHere[i] == default) {
                 number = i; break;
@@ -112,13 +118,18 @@ public class ItemPack : MonoBehaviour
         itemHere[number].transform.parent = transform;
         itemHere[number].GetComponent<Rigidbody2D>().isKinematic = true;//rigidbodyを無効化
 
+        CheckAndSetPos();
+
         return true;
     }
 
     private void CheckAndSetPos() {
         for (int i = 0; i < itemNum; i++) {
             itemHere[i].transform.localPosition =
-               new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
+               new Vector3((i % MaxOnRow) * nextX - plateMesh.size.x / 2.6f,
+               (i / MaxOnRow) * nextY + plateMesh.size.y / 2.6f, 0f);
+            if (itemHere[i] == null)
+                itemHere[i] = default;
         }
     }
 }

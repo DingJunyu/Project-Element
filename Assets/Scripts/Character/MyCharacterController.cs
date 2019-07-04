@@ -23,6 +23,7 @@ public class MyCharacterController : CreatureController
     }
 
     private void GetOrder() {
+        //押したキーで状態を渡す
         if (Input.GetKey(KeyCode.RightArrow)) {
             status = (int)CreatureStatus.moveToRight;
             ChangeDirectOnX(true);
@@ -31,7 +32,6 @@ public class MyCharacterController : CreatureController
             status = (int)CreatureStatus.moveToLeft;
             ChangeDirectOnX(false);
         }
-
         if (Input.GetKeyDown(KeyCode.Space)) {
             if (CanIJump(maxJumpTime))
                 status = (int)CreatureStatus.jump;
