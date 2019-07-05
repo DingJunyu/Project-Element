@@ -8,7 +8,7 @@ public class CreatureController : MonoBehaviour
 {
 
     public float speed = 5f;
-    public float jumpPower = 300f;
+    public float jumpPower = 200f;
 
     protected enum CreatureStatus {
         none,
@@ -24,12 +24,12 @@ public class CreatureController : MonoBehaviour
     protected Vector3 oldPos;
     protected Animator myAnimator;
 
-    private bool onTheGround = false;
-    private bool nextOnTheGround = true;
+    public bool onTheGround = false;
+    public bool nextOnTheGround = true;
     protected bool playerMoving = true;
     protected int status = (int)CreatureStatus.none;
 
-    private int jumpCount = 0;
+    public int jumpCount = 0;
     protected bool CanIJump(int maxJumpTime) { return jumpCount < maxJumpTime; }
     protected bool CanIJump() { return jumpCount < 1; }
 
@@ -80,8 +80,9 @@ public class CreatureController : MonoBehaviour
                 playerMoving = true;
                 break;
             case (int)CreatureStatus.jump:
-                Jump(200f);
-                playerMoving = false;
+                Jump(jumpPower);
+                onTheGround = false;//FootTriggerではバッグが出る可能性がある
+                nextOnTheGround = false;
                 jumpCount++;
                 break;
             case (int)CreatureStatus.none:
@@ -123,13 +124,7 @@ public class CreatureController : MonoBehaviour
     //********************************************
     //動画関連
     //********************************************
-    private void SetAnimationStatus() {
-
-        if (oldPos.x != transform.position.x && playerMoving)//横移動チェック
-            myAnimator.SetBool("Move", true);
-        else
-            myAnimator.SetBool("Move", false);
-
+    private void SetAnimationStatus() { 
         if (oldPos.y < transform.position.y && status == (int)CreatureStatus.jump) { 
             myAnimator.SetBool("OnTheGround", false);
             myAnimator.SetBool("Jump", true);
@@ -143,5 +138,11 @@ public class CreatureController : MonoBehaviour
             myAnimator.SetBool("OnTheGround", true);
             onTheGround = true;
         }
+
+        //床の上に居る限り、移動動画の演出を行う
+        if (oldPos.x != transform.position.x && onTheGround)//横移動チェック
+            myAnimator.SetBool("Move", true);
+        else
+            myAnimator.SetBool("Move", false);
     }
 }

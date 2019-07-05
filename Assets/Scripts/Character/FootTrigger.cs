@@ -5,6 +5,7 @@ using UnityEngine;
 public class FootTrigger : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision) {
+        Debug.Log("On The Ground");
         transform.parent.transform.GetComponent<MyCharacterController>().
             SetGround();
     }

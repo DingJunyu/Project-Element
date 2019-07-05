@@ -147,6 +147,15 @@ public class Material : MonoBehaviour
         }
     }
 
+    private void PutThisItemIntoPack() {
+        if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
+            if (!GameObject.Find("MyPack").GetComponent<ItemPack>().
+                InputNew(transform.gameObject)) {
+                Debug.Log("Pack Is Full");//鞄にスペースがない時にエラーメッセージを出す  
+            }
+        }
+    }
+
     void SetOneShape(int ranA, int ranB,
         int volA, int volB, int volC) {
         int randNum = Random.Range(0, 100);

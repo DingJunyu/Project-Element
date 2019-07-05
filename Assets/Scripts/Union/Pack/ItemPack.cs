@@ -13,9 +13,9 @@ public class ItemPack : MonoBehaviour
     private const int maxItemNum = 12;
     public bool ReferSpace() { return itemNum < maxItemNum; }
 
-    private const float nextX = 0.5f;
+    private const float nextX = 0.3f;
     private const int MaxOnRow = 6;
-    private const float nextY = 0.5f;
+    private const float nextY = 0.3f;
     private const float startX = -1f;
     private const float startY = 0.9f;
 
@@ -117,6 +117,7 @@ public class ItemPack : MonoBehaviour
         itemHere[number] = material;
         itemHere[number].transform.parent = transform;
         itemHere[number].GetComponent<Rigidbody2D>().isKinematic = true;//rigidbodyを無効化
+        itemHere[number].transform.localScale = new Vector2(1f, 1f);
 
         CheckAndSetPos();
 

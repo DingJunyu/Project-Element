@@ -450,6 +450,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2917339760193591184, guid: 15230265566b092428437c8f8f1df429,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917339760193591184, guid: 15230265566b092428437c8f8f1df429,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15230265566b092428437c8f8f1df429, type: 3}
 --- !u!1001 &1242615338
@@ -716,6 +726,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5577870180053559008, guid: 2bde47d63ce07294abeab7d2de3e3fa4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577870180053559008, guid: 2bde47d63ce07294abeab7d2de3e3fa4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577870180053559008, guid: 2bde47d63ce07294abeab7d2de3e3fa4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bde47d63ce07294abeab7d2de3e3fa4, type: 3}
 --- !u!1 &1844044293
@@ -924,7 +949,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpPower: 300
+  jumpPower: 200
+  onTheGround: 0
+  nextOnTheGround: 1
+  jumpCount: 0
   maxJumpTime: 2
 --- !u!50 &1916003069
 Rigidbody2D:
