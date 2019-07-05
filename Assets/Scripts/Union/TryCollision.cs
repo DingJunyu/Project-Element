@@ -7,9 +7,12 @@ public class TryCollision : MonoBehaviour {
     private GameObject realShowMeTheKey;
 
     private GameObject parent;
+    public GameObject myParent() { return parent; }
+    private GameManager gameManager;
 
     private void Start() {
-        parent = transform.parent.gameObject;
+        parent = transform.parent.gameObject;//親を指定する
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     //アイテムとプレーヤーの間の物理演算は行わないため、
@@ -19,19 +22,31 @@ public class TryCollision : MonoBehaviour {
             if (realShowMeTheKey != default)
                 return;
 
-            realShowMeTheKey = Instantiate(showMeTheKey,
+            if (!gameManager.AnObjectHere()) {//一回一個しか取れないので、制限しました
+                realShowMeTheKey = Instantiate(showMeTheKey,
                 parent.transform);
-
-            parent.GetComponent<Material>().iCanTakeIt();
+                parent.GetComponent<Material>().iCanTakeIt();
+                gameManager.HereHasAnObject();
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
-            if (realShowMeTheKey != default) { 
+            DestroyUI();
+        }
+    }
+
+    //消す時に生成したものを消す
+    ~TryCollision() {
+        DestroyUI();
+    }
+
+    private void DestroyUI() {//生成したUIを消す
+        if (realShowMeTheKey != default) { 
                 Destroy(realShowMeTheKey);
+                gameManager.HereHasNoObject();
                 parent.GetComponent<Material>().iCannotTakeIt();
-            }
         }
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(UnityEngine.EventSystems.EventTrigger))]
-public class RightClickMenu : MonoBehaviour, IPointerExitHandler
-{
+public class RightClickMenu : MonoBehaviour, IPointerExitHandler {
     private int amount = 0;
 
     public bool outOfMenu = true;
@@ -61,7 +60,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler
 
     //ボタン数に応じて背景の大きさを調整する
     private void SetPlateSize() {
-        CountButtonNum();
+        CountButtonNum();//繋がったボタンの数を統計する
         plate = transform.Find("Plate").GetComponent<RectTransform>();
         plate.sizeDelta = new Vector2(width, amount * heightPerButton);
     }
@@ -77,6 +76,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler
         if (button7 != default) SetThisButton(ref button7, counter++);
     }
 
+    //番号順でボタンを初期化する
     private void SetThisButton(ref GameObject thisButton, int num) {
         thisButton = Instantiate(thisButton, transform);
         if (num != 0)
@@ -99,7 +99,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler
     }
 
     public void DestoryParent() {
-        
+
         Destroy(myRealParent);
     }
 }

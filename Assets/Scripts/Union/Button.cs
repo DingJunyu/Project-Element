@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(UnityEngine.EventSystems.EventTrigger))]
 public class Button : MonoBehaviour
 {
+    //使う時に一個しか選ばないで
     public bool destroyThis = false;
     public bool closeThis = false;
     public bool detail = false;
@@ -25,6 +26,7 @@ public class Button : MonoBehaviour
         trigger.triggers.Add(entry);
     }
 
+    /*クリック事件*/
     private void OnClick(BaseEventData pointData) {
         if (destroyThis)
             DestoryThis();
@@ -32,14 +34,14 @@ public class Button : MonoBehaviour
             CloseThis();
     }
 
-    private void DestoryThis() {
+    private void DestoryThis() {//親を消す
         GameObject myParent;
         myParent = transform.parent.gameObject;//メニューオブジェクトを探す
         myParent.GetComponent<RightClickMenu>().DestoryParent();//アイテムを削除
         Destroy(myParent);//メニューを削除
     }
 
-    private void CloseThis() {
+    private void CloseThis() {//メニューを閉じる
         GameObject myParent;
         myParent = transform.parent.gameObject;//メニューオブジェクトを探す
         Destroy(myParent);//メニューを削除

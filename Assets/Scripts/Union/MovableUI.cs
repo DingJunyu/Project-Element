@@ -20,12 +20,11 @@ public class MovableUI : MonoBehaviour
 
     private void Awake() {
         if (transform.parent != default)
-            realParent = transform.parent.gameObject;
+            realParent = transform.parent.gameObject;//ほんとの親を設置します
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         plateMesh = transform.Find("Plate").GetComponent<RectTransform>();
@@ -35,11 +34,10 @@ public class MovableUI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (moveWithMouse)
+    void Update() {
+        if (moveWithMouse)//マウスに従う
             MoveWithMouse();
-        if (moveWithObject && realParent != default)
+        if (moveWithObject && realParent != default)//そのものに従う
             MoveWithObject();
     }
 
@@ -72,8 +70,8 @@ public class MovableUI : MonoBehaviour
     }
 
     void MoveWithObject() {
-        Vector2 pos;
-        Vector2 tempPos;
+        Vector2 pos;//実際に使う座標
+        Vector2 tempPos;//カメラに参照した座標
 
         tempPos = RectTransformUtility.WorldToScreenPoint(mainCamera,
             realParent.transform.position);

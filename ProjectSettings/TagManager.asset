@@ -10,6 +10,7 @@ TagManager:
   - Item_Mark
   - Ground
   - Block
+  - Item_Trigger
   layers:
   - Default
   - TransparentFX

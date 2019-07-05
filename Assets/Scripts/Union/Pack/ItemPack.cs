@@ -7,7 +7,7 @@ public class ItemPack : MonoBehaviour
     /*すべてのアイテムをここに置くか。。。*/
     public GameObject itemTemplate;
 
-    private SpriteRenderer plateMesh;
+    private SpriteRenderer plateMesh;//鞄の背景
 
     private int itemNum;
     private const int maxItemNum = 12;
@@ -40,16 +40,6 @@ public class ItemPack : MonoBehaviour
         if (!isAEmptyPack) Load();//データがある時読み込む
 
         plateMesh = GetComponent<SpriteRenderer>();
-
-        //itemNum = 2;
-        //itemHere[0] = Instantiate(itemTemplate, transform);
-        //itemHere[0].transform.SetParent(transform);
-        //itemHere[0].transform.localPosition = new Vector3(1f, 0f, 0f);
-
-        //itemHere[1] = Instantiate(itemTemplate,
-        //    transform.position, Quaternion.identity);
-        //itemHere[1].transform.SetParent(transform);
-        //itemHere[1].transform.localPosition = new Vector3(2f, 0f, 0f);
     }
 
     // Update is called once per frame
@@ -81,16 +71,16 @@ public class ItemPack : MonoBehaviour
             //保存されたデータを読み込む
             itemHere[i].GetComponent<Material>().
                 GiveMeANewSerialCode(PlayerPrefs.GetString("ItemInpack" + i));
-            itemHere[1].transform.localPosition =
+            itemHere[i].GetComponent<Material>().putInPack();
+           itemHere[1].transform.localPosition =
                 new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
         }
     }
 
     public void DeletePack() {
         PlayerPrefs.DeleteKey("ItemMyPack");
-        for (int i = 0; i < itemNum; i++)
-        {
-            itemHere[i].GetComponent<Material>().DeleteThis();
+        for (int i = 0; i < itemNum; i++) {
+            itemHere[i].GetComponent<Material>().DeleteThis();//保存したもののデータを全部消す
         }
         PlayerPrefs.DeleteKey("ItemAmountInMyPack");
     }
@@ -124,11 +114,11 @@ public class ItemPack : MonoBehaviour
         return true;
     }
 
-    private void CheckAndSetPos() {
+    private void CheckAndSetPos() {//鞄の中の位置を調整する
         for (int i = 0; i < itemNum; i++) {
             itemHere[i].transform.localPosition =
                new Vector3((i % MaxOnRow) * nextX - plateMesh.size.x / 2.6f,
-               (i / MaxOnRow) * nextY + plateMesh.size.y / 2.6f, 0f);
+               (i / MaxOnRow) * nextY + plateMesh.size.y / 2.6f, -.1f);
             if (itemHere[i] == null)
                 itemHere[i] = default;
         }

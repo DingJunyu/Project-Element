@@ -14,8 +14,23 @@ public class GameManager : MonoBehaviour
 
     public GameObject choosedA;
     public GameObject choosedB;
+    public void SetChooseA(GameObject gameObject) {
+        choosedA = gameObject;
+    }
+
+    public void SetChooseB(GameObject gameObject) {
+        choosedA = gameObject;
+    }
+    private bool CanIFusion() {
+        return (choosedA != default && choosedB != default);
+    }
 
     public GameObject pack;
+
+    public bool isHereAnObject = false;
+    public void HereHasAnObject() { isHereAnObject = true; }
+    public void HereHasNoObject() { isHereAnObject = false; }
+    public bool AnObjectHere() { return isHereAnObject; }
 
     /*単独のファイルにまとめる*/
     //必要のは：倉庫(200)、パック(50)、試験管パック(12)
@@ -27,25 +42,13 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         Click();
         if (CanIFusion())
             Fusion();
     }
 
-    public void SetChooseA(GameObject gameObject) {
-        choosedA = gameObject;
-    }
-
-    public void SetChooseB(GameObject gameObject) {
-        choosedA = gameObject;
-    }
-
-    private bool CanIFusion() {
-        return (choosedA != default && choosedB != default);
-    }
-
+    /*調合*/
     private void Fusion() {
         if (choosedB.GetComponent<TestTube>().
             InputANewMaterial(choosedA.GetComponent<Material>()))
@@ -58,10 +61,11 @@ public class GameManager : MonoBehaviour
     /*マウス事件*/
     /******************************************************/
     private void Click() {//クリック事件はここで解決
-        PutMaterialIntoTube();
+        ChooseOne();
     }
 
-    private void PutMaterialIntoTube() {
+
+    private void ChooseOne() {//選択
         if (Input.GetMouseButtonDown(0)) {
             RaycastHit2D hit = 
                 Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),
@@ -71,6 +75,12 @@ public class GameManager : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Item_Material"){
                     choosedA = hit.collider.gameObject;
                 }
+
+                if (hit.collider.gameObject.tag == "Item_Trigger") {
+                    choosedA = hit.collider.gameObject.GetComponent<TryCollision>().
+                        myParent().gameObject;
+                }
+
                 if (hit.collider.gameObject.tag == "tube") {
                     if (choosedA != default) 
                     choosedB = hit.collider.gameObject;

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Material : MonoBehaviour
-{
+public class Material : MonoBehaviour {
     //公的訪問できる部分
 
     public bool typeRandom;
@@ -13,6 +12,8 @@ public class Material : MonoBehaviour
     public GameObject rightClickMenu;
     private GameObject realRightClickMenu;
 
+    private bool inPack = false;
+    public void putInPack() { inPack = true; }
 
     //多分、パックの中にテンプレートを使って全部有効にするので、
     //テンプレートの部分はすべてのメソッドを無効化にする
@@ -131,20 +132,17 @@ public class Material : MonoBehaviour
 
         SetShapeAndType();//属性に基づいてデータを生成する
 
+        RandomString randomString = new RandomString();//ランダム文字列生成器
 
-        RandomString randomString = new RandomString();
-
-        serialNum = randomString.GenerateCheckCode32();
-        while ((PlayerPrefs.HasKey(serialNum))) {
+        serialNum = randomString.GenerateCheckCode32();//シリアル番号を生成する
+        while ((PlayerPrefs.HasKey(serialNum))) {//重複チャック
             serialNum = randomString.GenerateCheckCode32();
         }
-        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);
+        PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);//保存データを有効化にする
     }
 
     private void Update() {
-        if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
-            GameObject.Find("MyPack").GetComponent<ItemPack>().InputNew(transform.gameObject);
-        }
+        PutThisItemIntoPack();//鞄に入れる
     }
 
     private void PutThisItemIntoPack() {
@@ -212,14 +210,14 @@ public class Material : MonoBehaviour
         int ranLe = 0;
         int ranRi = 5;
 
-        switch (randSta) {
+        switch (randSta) {//指定した範囲内でランダムデータを生成する
             case (int)randomStandard.better: ranLe = 12; ranRi = 16; break;
             case (int)randomStandard.medium: ranLe = 8; ranRi = 12; break;
             case (int)randomStandard.weak: ranLe = 4; ranRi = 8; break;
         }
 
         stepType = str;
-        strength = Random.Range(ranLe, ranRi);
+        strength = Random.Range(ranLe, ranRi);//強さを生成する
     }
 
     private void SetShapeAndType() {
@@ -296,7 +294,7 @@ public class Material : MonoBehaviour
 
     private void OnMouseOver() {
         //右クリックメニューを使っていない時に詳細を描画する
-        if (!isThisTemplate && realRightClickMenu == default) 
+        if (!isThisTemplate && realRightClickMenu == default)
             ANewTextBar();
         //右クリックメニューを呼び出したら詳細画面を閉じる
         if (realRightClickMenu != default && realTextBar != default) {
@@ -329,7 +327,7 @@ public class Material : MonoBehaviour
             strength;
     }
 
-    private void OnMouseExit() {
+    private void OnMouseExit() {//マウスが出る時に詳細画面を消す
         if (!isThisTemplate) {
             Destroy(realTextBar);
             realTextBar = default;
@@ -337,14 +335,13 @@ public class Material : MonoBehaviour
     }
 
     ~Material() {
-        if(realTextBar!=default)
+        if (realTextBar != default)
             Destroy(realTextBar);
     }
 
     private void Click() {
         if (GetComponent<Rigidbody2D>().isKinematic)
-            if (Input.GetMouseButtonDown(1))
-            {
+            if (Input.GetMouseButtonDown(1)) {
                 if (realRightClickMenu != default)
                     return;
                 //このメニューの親はアイテムではありません
@@ -355,7 +352,7 @@ public class Material : MonoBehaviour
                 vector3.x += mouseOffsetOnX;
                 vector3.y += mouseOffsetOnY;
 
-                realRightClickMenu.transform.position = vector3;
+                realRightClickMenu.transform.position = vector3;//正しい座標を設置する
             }
     }
 }

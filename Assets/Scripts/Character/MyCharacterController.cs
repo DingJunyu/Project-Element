@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ここは状態変化の操作しかやりません
-public class MyCharacterController : CreatureController
-{
-    public int maxJumpTime=2;
+public class MyCharacterController : CreatureController {
+    public int maxJumpTime = 2;
 
     // Start is called before the first frame update
     void Start() {
@@ -19,22 +18,28 @@ public class MyCharacterController : CreatureController
     }
 
     private void FixedUpdate() {
-        
+
     }
 
     private void GetOrder() {
         //押したキーで状態を渡す
-        if (Input.GetKey(KeyCode.RightArrow)) {
-            status = (int)CreatureStatus.moveToRight;
-            ChangeDirectOnX(true);
+        if (!AmIAttacking()) {
+            if (Input.GetKey(KeyCode.RightArrow)) {
+                status = (int)CreatureStatus.moveToRight;
+                ChangeDirectOnX(true);
+            }
+            if (Input.GetKey(KeyCode.LeftArrow)) {
+                status = (int)CreatureStatus.moveToLeft;
+                ChangeDirectOnX(false);
+            }
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                if (CanIJump(maxJumpTime))
+                    status = (int)CreatureStatus.jump;
+            }
         }
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            status = (int)CreatureStatus.moveToLeft;
-            ChangeDirectOnX(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (CanIJump(maxJumpTime))
-                status = (int)CreatureStatus.jump;
+        if (Input.GetKeyDown(KeyCode.A)) {
+            if (!AmIAttacking())
+                LetMeAttack();
         }
     }
 }

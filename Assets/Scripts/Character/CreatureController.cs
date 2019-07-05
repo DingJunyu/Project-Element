@@ -4,8 +4,7 @@ using UnityEngine;
 using System;
 
 //移動できるものの具体的な操作はここでやります。
-public class CreatureController : MonoBehaviour
-{
+public class CreatureController : MonoBehaviour {
 
     public float speed = 5f;
     public float jumpPower = 200f;
@@ -24,15 +23,41 @@ public class CreatureController : MonoBehaviour
     protected Vector3 oldPos;
     protected Animator myAnimator;
 
-    public bool onTheGround = false;
-    public bool nextOnTheGround = true;
+    /*移動関連*/
+    private bool onTheGround = false;
+    private bool nextOnTheGround = true;
     protected bool playerMoving = true;
     protected int status = (int)CreatureStatus.none;
+    public void SetGround() {
+        nextOnTheGround = true;
+    }
 
-    public int jumpCount = 0;
+    public void RemoveOnTheGround() {
+        onTheGround = false;
+    }
+
+    private int jumpCount = 0;//すでにジャンプした回数（床に戻るとリセット）
     protected bool CanIJump(int maxJumpTime) { return jumpCount < maxJumpTime; }
-    protected bool CanIJump() { return jumpCount < 1; }
+    protected bool CanIJump() { return jumpCount < 1; }//基本は一回しかジャンプできない
 
+    /*攻撃関連*/
+    public bool unMovable = false;//これはattackingでコントロールする
+    public bool attacking;//外に渡す入口
+    protected void LetMeAttack() { attacking = true; }
+    protected void StopAttacking() { attacking = false; }
+    protected bool AmIAttacking() { return attacking; }
+    int attackFrameCounter = 0;
+    const int maxAttackFrame = 300;
+    private void CheckMyAttacking() {
+        attackFrameCounter++;
+        if (attackFrameCounter < maxAttackFrame)
+            return;
+        myAnimator.SetBool("OnTheGround", false);//動画状態をリセット
+        attackFrameCounter = 0;
+        attacking = false;
+    }
+
+    /*標準初期化*/
     protected void StandardStart() {//継承先に必ず呼び出す！
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
@@ -40,22 +65,15 @@ public class CreatureController : MonoBehaviour
         myAnimator.SetBool("OnTheGround", true);
     }
 
+    /*標準Update*/
     protected void StandardUpdate() {
-        CheckStatus();
+        CheckStatus();//状態更新
 
-        Move();
+        Move();//移動
 
-        SetAnimationStatus();
+        SetAnimationStatus();//動画状態更新
 
-        ClearStatus();
-    }
-
-    public void SetGround() {
-        nextOnTheGround = true;
-    }
-
-    public void RemoveOnTheGround() {
-        onTheGround = false;
+        ClearStatus();//後始末
     }
 
     //*********************************************
@@ -67,10 +85,14 @@ public class CreatureController : MonoBehaviour
         }
         if (onTheGround)
             jumpCount = 0;
+
+        unMovable = attacking;//攻撃状態による移動動画の状態を変化
+        if (attacking)
+            CheckMyAttacking();
     }
 
     private void Move() {
-        switch(status){
+        switch (status) {
             case (int)CreatureStatus.moveToRight:
                 MoveOnX(true);
                 playerMoving = true;
@@ -109,7 +131,7 @@ public class CreatureController : MonoBehaviour
     }
 
     protected void ResetForceOnX() {
-        if (onTheGround)//床の上に居る限り、減速する
+        if (onTheGround || attacking)//床の上に居る限り、減速する
             myRigidbody.velocity = new Vector2(0,
                 myRigidbody.velocity.y);
     }
@@ -124,8 +146,9 @@ public class CreatureController : MonoBehaviour
     //********************************************
     //動画関連
     //********************************************
-    private void SetAnimationStatus() { 
-        if (oldPos.y < transform.position.y && status == (int)CreatureStatus.jump) { 
+    private void SetAnimationStatus() {
+
+        if (oldPos.y < transform.position.y && status == (int)CreatureStatus.jump) {
             myAnimator.SetBool("OnTheGround", false);
             myAnimator.SetBool("Jump", true);
         }
@@ -144,5 +167,21 @@ public class CreatureController : MonoBehaviour
             myAnimator.SetBool("Move", true);
         else
             myAnimator.SetBool("Move", false);
+
+        if (attacking) {
+            ResetForceOnX();
+            ResetAllMovingStatus();
+            myAnimator.SetBool("Attack", true);
+        }
+        else {
+            myAnimator.SetBool("Attack", false);
+        }
+    }
+
+    private void ResetAllMovingStatus() {
+        myAnimator.SetBool("OnTheGround", false);
+        myAnimator.SetBool("Jump", false);
+        myAnimator.SetBool("Falling", false);
+        myAnimator.SetBool("Move", false);
     }
 }

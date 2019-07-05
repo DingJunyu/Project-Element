@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestTubePack : MonoBehaviour
-{
+public class TestTubePack : MonoBehaviour {
     public GameObject testTubeTemplate;
 
     private int tubeNum;
@@ -26,7 +25,7 @@ public class TestTubePack : MonoBehaviour
 
         isAEmptyPack = true;
     }
-    
+
     // Start is called before the first frame update
     void Start() {
         if (PlayerPrefs.HasKey("MyPack")) isAEmptyPack = false;
@@ -87,13 +86,11 @@ public class TestTubePack : MonoBehaviour
         PlayerPrefs.DeleteKey("AmountInMyPack");
     }
 
-    public void Close()
-    {
+    public void Close() {
         gameObject.SetActive(false);
     }
 
-    public void Open()
-    {
+    public void Open() {
         gameObject.SetActive(true);
     }
 
