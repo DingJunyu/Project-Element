@@ -30,6 +30,9 @@ public abstract class StandardEnemy : CreatureController {
         Destroy(realHitPointBar);
     }
 
+    protected override abstract void ChildStart();
+    protected override abstract void ChildUpdate();
+
     protected override abstract void Inif();
     protected override abstract void GetOrder();//命令を取得する
     protected override abstract void CheckChildStatus();

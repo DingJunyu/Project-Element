@@ -12,9 +12,7 @@ public class Patrol : StandardEnemy {
     private float realRightX;
     private bool facingLeft;
 
-    // Start is called before the first frame update
-    void Start() {
-        StandardStart();
+    protected override void ChildStart() {
         EnemyInif();
         facingLeft = faceLeft;//左向きに合わせる
 
@@ -22,11 +20,8 @@ public class Patrol : StandardEnemy {
         realRightX = transform.position.x + rightXtoNow;
     }
 
-    // Update is called once per frame
-    void Update() {
-        StandardUpdate();//標準アップデート
+    protected override void ChildUpdate() {
         EnemyStandardUpdate();//敵クラスの標準アップデート
-        StandardLateUpdate();//後始末
     }
 
     protected override void Inif() {
@@ -43,6 +38,7 @@ public class Patrol : StandardEnemy {
         else
             status = (int)CreatureStatus.moveToRight;
 
+        //マークポイントに超えたら転向します
         if (transform.position.x <= realLeftX && facingLeft) {
             ChangeDirectOnX();
             facingLeft = !facingLeft;

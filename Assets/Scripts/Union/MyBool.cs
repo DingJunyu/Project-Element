@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyBool
-{
-    
+public class MyBool {
+
 }

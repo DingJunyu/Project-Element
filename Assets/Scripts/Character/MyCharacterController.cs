@@ -9,20 +9,10 @@ public class MyCharacterController : CreatureController {
     public GameObject attackCollision;
     private GameObject realAttackCollision;
 
-    // Start is called before the first frame update
-    void Start() {
-        StandardStart();
+    protected override void ChildStart() {     
     }
 
-    // Update is called once per frame
-    void Update() {
-        StandardUpdate();//標準先処理
-
-        StandardLateUpdate();//標準後処理
-    }
-
-    private void FixedUpdate() {
-
+    protected override void ChildUpdate() {
     }
 
     protected override void Inif() {

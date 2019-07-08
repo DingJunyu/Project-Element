@@ -42,7 +42,7 @@ public class TestTubePack : MonoBehaviour {
             transform.position, Quaternion.identity);
         testTubes[1].transform.SetParent(transform);
         testTubes[1].GetComponent<TestTube>().SetSize(2.5f);
-        testTubes[1].transform.localPosition = new Vector3(2f, 0f, 0f);
+        testTubes[1].transform.localPosition = new Vector3(1.5f, 0f, 0f);
     }
 
     // Update is called once per frame

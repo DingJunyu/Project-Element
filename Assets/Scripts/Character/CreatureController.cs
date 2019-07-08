@@ -49,6 +49,10 @@ public abstract class CreatureController : MonoBehaviour {
     protected int attackFrameCounter = 0;
     protected const int maxAttackFrame = 300;
 
+    private void Start() {
+        StandardStart();
+        ChildStart();
+    }
 
     /*標準初期化*/
     protected void StandardStart() {//継承先に必ず呼び出す！
@@ -56,6 +60,14 @@ public abstract class CreatureController : MonoBehaviour {
         myAnimator = GetComponent<Animator>();
 
         Inif();
+    }
+
+    protected abstract void ChildStart();
+
+    private void Update() {
+        StandardUpdate();
+        ChildUpdate();
+        StandardLateUpdate();
     }
 
     /*標準Update*/
@@ -67,6 +79,8 @@ public abstract class CreatureController : MonoBehaviour {
         SetAnimationStatus();//動画状態更新
         Move();//移動
     }
+
+    protected abstract void ChildUpdate();
 
     protected void StandardLateUpdate() {
         CheckChildStatus();//子どもクラスで実現された
@@ -103,7 +117,7 @@ public abstract class CreatureController : MonoBehaviour {
     //移動関連
     //*********************************************
     private void CheckStatus() {
-        if (onTheGround)
+        if (onTheGround)//床に居る時にジャンプ回数をリセットする
             jumpCount = 0;
 
         unMovable = attacking;//攻撃状態による移動動画の状態を変化

@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatSystem : MonoBehaviour {
-
+public class CombatSystem {
+    private int damageNow;
 }
