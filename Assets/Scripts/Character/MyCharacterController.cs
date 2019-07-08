@@ -9,10 +9,10 @@ public class MyCharacterController : CreatureController {
     public GameObject attackCollision;
     private GameObject realAttackCollision;
 
-    protected override void ChildStart() {     
+    protected override void ChildStart() {//startと同様 
     }
 
-    protected override void ChildUpdate() {
+    protected override void ChildUpdate() {//updateと同様
     }
 
     protected override void Inif() {
