@@ -11,6 +11,7 @@ TagManager:
   - Ground
   - Block
   - Item_Trigger
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - Item
   - Playersfoot
   - ItemTrigger
-  - 
-  - 
+  - Enemy
+  - PlayerAttack
   - 
   - 
   - 

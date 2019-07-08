@@ -152,8 +152,7 @@ public class TestTube : MonoBehaviour
             text = string.Format("{0:.0}/{0:.0}", numRemained - numUsed, numRemained);
     }
 
-    private void OnMouseExit()
-    {
+    private void OnMouseExit() {
         Destroy(realTextBar);
         realTextBar = default;
     }

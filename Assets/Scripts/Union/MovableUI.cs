@@ -15,8 +15,8 @@ public class MovableUI : MonoBehaviour
 
     private Vector2 size;
 
-    const float itemWidth = 20f;
-    const float itemHeight = 20f;
+    public float itemWidth = 20f;
+    public float itemHeight = 20f;
 
     private void Awake() {
         if (transform.parent != default)

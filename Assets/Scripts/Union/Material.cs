@@ -340,7 +340,7 @@ public class Material : MonoBehaviour {
     }
 
     private void Click() {
-        if (GetComponent<Rigidbody2D>().isKinematic)
+        if (GetComponent<Rigidbody2D>().isKinematic || inPack)
             if (Input.GetMouseButtonDown(1)) {
                 if (realRightClickMenu != default)
                     return;

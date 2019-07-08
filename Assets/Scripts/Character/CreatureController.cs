@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 //移動できるものの具体的な操作はここでやります。
-public class CreatureController : MonoBehaviour {
+public abstract class CreatureController : MonoBehaviour {
 
     public float speed = 5f;
     public float jumpPower = 200f;
@@ -24,8 +24,8 @@ public class CreatureController : MonoBehaviour {
     protected Animator myAnimator;
 
     /*移動関連*/
-    private bool onTheGround = false;
-    private bool nextOnTheGround = true;
+    protected bool onTheGround = false;
+    protected bool nextOnTheGround = true;
     protected bool playerMoving = true;
     protected int status = (int)CreatureStatus.none;
     public void SetGround() {
@@ -36,7 +36,7 @@ public class CreatureController : MonoBehaviour {
         onTheGround = false;
     }
 
-    private int jumpCount = 0;//すでにジャンプした回数（床に戻るとリセット）
+    protected int jumpCount = 0;//すでにジャンプした回数（床に戻るとリセット）
     protected bool CanIJump(int maxJumpTime) { return jumpCount < maxJumpTime; }
     protected bool CanIJump() { return jumpCount < 1; }//基本は一回しかジャンプできない
 
@@ -46,49 +46,67 @@ public class CreatureController : MonoBehaviour {
     protected void LetMeAttack() { attacking = true; }
     protected void StopAttacking() { attacking = false; }
     protected bool AmIAttacking() { return attacking; }
-    int attackFrameCounter = 0;
-    const int maxAttackFrame = 300;
-    private void CheckMyAttacking() {
-        attackFrameCounter++;
-        if (attackFrameCounter < maxAttackFrame)
-            return;
-        myAnimator.SetBool("OnTheGround", false);//動画状態をリセット
-        attackFrameCounter = 0;
-        attacking = false;
-    }
+    protected int attackFrameCounter = 0;
+    protected const int maxAttackFrame = 300;
+
 
     /*標準初期化*/
     protected void StandardStart() {//継承先に必ず呼び出す！
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
 
-        myAnimator.SetBool("OnTheGround", true);
+        Inif();
     }
 
     /*標準Update*/
     protected void StandardUpdate() {
+        if (!alive)//生きている状態しか更新しない
+            return;
+        GetOrder();
         CheckStatus();//状態更新
-
-        Move();//移動
-
         SetAnimationStatus();//動画状態更新
+        Move();//移動
+    }
 
-        ClearStatus();//後始末
+    protected void StandardLateUpdate() {
+        CheckChildStatus();//子どもクラスで実現された
+        ClearStatus();//後始末//親クラスで実現された
+
+        if (deadEnd)
+            Death();
+    }
+
+    protected abstract void Inif();
+    protected abstract void GetOrder();//命令を取得する
+    protected abstract void CheckChildStatus();
+    protected abstract void SetAnimationStatus();
+
+    public bool alive = true;
+    public bool deadEnd = false;
+
+    public void DeadPlayEnd() {//死亡演出
+        deadEnd = true;
+    }
+
+    public void SetDead() {
+        alive = false;
+        myRigidbody.isKinematic = true;
+        ResetThis();
+        myAnimator.SetBool("Dieing", true);
+    }
+
+    private void Death() {
+        Destroy(transform.gameObject);
     }
 
     //*********************************************
     //移動関連
     //*********************************************
     private void CheckStatus() {
-        if (!Enum.IsDefined(typeof(CreatureStatus), status)) {
-            status = (int)CreatureStatus.none;
-        }
         if (onTheGround)
             jumpCount = 0;
 
         unMovable = attacking;//攻撃状態による移動動画の状態を変化
-        if (attacking)
-            CheckMyAttacking();
     }
 
     private void Move() {
@@ -114,17 +132,15 @@ public class CreatureController : MonoBehaviour {
     }
 
     private void ClearStatus() {
-        if (oldPos.y == transform.position.y)
-            nextOnTheGround = false;
         oldPos = transform.position;
         status = (int)CreatureStatus.none;
     }
 
-    protected void Jump(float strength) {
+    private void Jump(float strength) {
         myRigidbody.AddForce(new Vector2(0, strength));
     }
 
-    protected void MoveOnX(bool right) {
+    private void MoveOnX(bool right) {
         myRigidbody.velocity =
             new Vector2((right ? speed : -speed),
             myRigidbody.velocity.y);
@@ -136,52 +152,21 @@ public class CreatureController : MonoBehaviour {
                 myRigidbody.velocity.y);
     }
 
+    private void ResetThis() {
+        myRigidbody.velocity = new Vector2(0, 0);
+    }
+
     protected void ChangeDirectOnX(bool right) {
         Vector2 theScale = transform.localScale;
 
-        theScale.x = right ? 1 : -1;
+        theScale.x = right ? Math.Abs(theScale.x) : -Math.Abs(theScale.x);
         transform.localScale = theScale;
     }
 
-    //********************************************
-    //動画関連
-    //********************************************
-    private void SetAnimationStatus() {
+    protected void ChangeDirectOnX() {
+        Vector2 theScale = transform.localScale;
 
-        if (oldPos.y < transform.position.y && status == (int)CreatureStatus.jump) {
-            myAnimator.SetBool("OnTheGround", false);
-            myAnimator.SetBool("Jump", true);
-        }
-        if (oldPos.y > transform.position.y && !nextOnTheGround) {
-            myAnimator.SetBool("Jump", false);
-            myAnimator.SetBool("Falling", true);
-        }
-        if (nextOnTheGround) {//FootTriggerから信号を受けると床に居る状態を設置する
-            myAnimator.SetBool("Falling", false);
-            myAnimator.SetBool("OnTheGround", true);
-            onTheGround = true;
-        }
-
-        //床の上に居る限り、移動動画の演出を行う
-        if (oldPos.x != transform.position.x && onTheGround)//横移動チェック
-            myAnimator.SetBool("Move", true);
-        else
-            myAnimator.SetBool("Move", false);
-
-        if (attacking) {
-            ResetForceOnX();
-            ResetAllMovingStatus();
-            myAnimator.SetBool("Attack", true);
-        }
-        else {
-            myAnimator.SetBool("Attack", false);
-        }
-    }
-
-    private void ResetAllMovingStatus() {
-        myAnimator.SetBool("OnTheGround", false);
-        myAnimator.SetBool("Jump", false);
-        myAnimator.SetBool("Falling", false);
-        myAnimator.SetBool("Move", false);
+        theScale.x =  - theScale.x;
+        transform.localScale = theScale;
     }
 }
