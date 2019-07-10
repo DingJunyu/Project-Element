@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1354011424180808318}
   - component: {fileID: 1354011424180808317}
-  m_Layer: 0
-  m_Name: MyPack
+  - component: {fileID: 1167640520}
+  m_Layer: 14
+  m_Name: MyTubePack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,3 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testTubeTemplate: {fileID: 4239874197409825369, guid: 3fd6447f01734fd4fa4a26cda068a401,
     type: 3}
+--- !u!114 &1167640520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354011424180808316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b4de116952f45b4f8fe23450d09e345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

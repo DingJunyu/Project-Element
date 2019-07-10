@@ -115,6 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveWithObject: 1
   moveWithMouse: 0
+  itemWidth: 20
+  itemHeight: 20
 --- !u!1 &4371977577508249349
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,8 +249,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.39565724, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0.54136145, b: 0.24056602, a: 1}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

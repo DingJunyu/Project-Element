@@ -51,8 +51,10 @@ public class GameManager : MonoBehaviour
     /*調合*/
     private void Fusion() {
         if (choosedB.GetComponent<TestTube>().
-            InputANewMaterial(choosedA.GetComponent<Material>()))
+            InputANewMaterial(choosedA.GetComponent<Material>())) {
             Destroy(choosedA);//使った素材を消す
+            choosedA.GetComponent<Material>().DeleteThisFromPack();
+        }
         choosedA = default;//選択を無効化にする
         choosedB = default;//選択を無効化にする
     }
@@ -66,11 +68,11 @@ public class GameManager : MonoBehaviour
 
 
     private void ChooseOne() {//選択
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetButtonDown("Fire")) {
             RaycastHit2D hit = 
                 Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),
                 Vector2.zero);
-
+                    
             if (hit.collider != null) {
                 if (hit.collider.gameObject.tag == "Item_Material"){
                     choosedA = hit.collider.gameObject;

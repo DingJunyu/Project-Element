@@ -32,22 +32,23 @@ public class TestTubePack : MonoBehaviour {
 
         if (!isAEmptyPack) Load();//データがある時読み込む
 
-        tubeNum = 2;
-        testTubes[0] = Instantiate(testTubeTemplate, transform);
-        testTubes[0].transform.SetParent(transform);
-        testTubes[0].GetComponent<TestTube>().SetSize(2.5f);
-        testTubes[0].transform.localPosition = new Vector3(1f, 0f, 0f);
-
-        testTubes[1] = Instantiate(testTubeTemplate,
-            transform.position, Quaternion.identity);
-        testTubes[1].transform.SetParent(transform);
-        testTubes[1].GetComponent<TestTube>().SetSize(2.5f);
-        testTubes[1].transform.localPosition = new Vector3(1.5f, 0f, 0f);
+        SetANewPack(6);
     }
 
     // Update is called once per frame
     void Update() {
 
+    }
+
+    private void SetANewPack(int num) {
+        for (int i = 0; i < num; i++) {
+            //新しいオブジェクトを生成する
+            testTubes[i] = Instantiate(testTubeTemplate,
+                transform);
+            testTubes[i].GetComponent<TestTube>().SetSize(2.5f);
+            testTubes[i].transform.localPosition =
+                new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
+        }
     }
 
     private void Save() {

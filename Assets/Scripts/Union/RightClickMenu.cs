@@ -99,7 +99,7 @@ public class RightClickMenu : MonoBehaviour, IPointerExitHandler {
     }
 
     public void DestoryParent() {
-
+        myRealParent.GetComponent<Material>().DeleteThisFromPack();
         Destroy(myRealParent);
     }
 }

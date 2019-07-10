@@ -17,7 +17,21 @@ public class TryCollision : MonoBehaviour {
 
     //アイテムとプレーヤーの間の物理演算は行わないため、
     //ここでトリガーを実現しました。
-    private void OnTriggerEnter2D(Collider2D collision) {
+    //private void OnTriggerEnter2D(Collider2D collision) {
+    //    if (collision.CompareTag("Player")) {
+    //        if (realShowMeTheKey != default)
+    //            return;
+
+    //        if (!gameManager.AnObjectHere()) {//一回一個しか取れないので、制限しました
+    //            realShowMeTheKey = Instantiate(showMeTheKey,
+    //            parent.transform);
+    //            parent.GetComponent<Material>().iCanTakeIt();
+    //            gameManager.HereHasAnObject();
+    //        }
+    //    }
+    //}
+
+    private void OnTriggerStay2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
             if (realShowMeTheKey != default)
                 return;

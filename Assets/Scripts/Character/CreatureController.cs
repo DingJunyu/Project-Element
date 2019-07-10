@@ -7,7 +7,7 @@ using System;
 public abstract class CreatureController : MonoBehaviour {
 
     public float speed = 5f;
-    public float jumpPower = 200f;
+    public float jumpPower = 250f;
 
     protected enum CreatureStatus {
         none,

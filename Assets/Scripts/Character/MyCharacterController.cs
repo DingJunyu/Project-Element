@@ -7,9 +7,11 @@ public class MyCharacterController : CreatureController {
     public int maxJumpTime = 2;
 
     public GameObject attackCollision;
+    private ItemPack myPack;
     private GameObject realAttackCollision;
 
     protected override void ChildStart() {//startと同様 
+        myPack = GameObject.Find("MyPack").GetComponent<ItemPack>();
     }
 
     protected override void ChildUpdate() {//updateと同様
@@ -23,20 +25,20 @@ public class MyCharacterController : CreatureController {
         status = (int)CreatureStatus.none;
         //押したキーで状態を渡す
         if (!AmIAttacking()) {
-            if (Input.GetKey(KeyCode.RightArrow)) {
+            if (Input.GetButton("Right")) {
                 status = (int)CreatureStatus.moveToRight;
                 ChangeDirectOnX(true);
             }
-            if (Input.GetKey(KeyCode.LeftArrow)) {
+            if (Input.GetButton("Left")) {
                 status = (int)CreatureStatus.moveToLeft;
                 ChangeDirectOnX(false);
             }
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            if (Input.GetButtonDown("Jump")) {
                 if (CanIJump(maxJumpTime))
                     status = (int)CreatureStatus.jump;
             }
         }
-        if (Input.GetKeyDown(KeyCode.A)) {
+        if (Input.GetButtonDown("Fire") && !myPack.isPackOpen()) {
             if (!AmIAttacking()) {
                 LetMeAttack();
                 realAttackCollision = Instantiate(attackCollision, transform);
@@ -72,7 +74,9 @@ public class MyCharacterController : CreatureController {
         }
 
         //床の上に居る限り、移動動画の演出を行う
-        if (oldPos.x != transform.position.x && onTheGround)//横移動チェック
+        if ((status==(int)CreatureStatus.moveToLeft ||
+            status == (int)CreatureStatus.moveToRight)  && 
+            onTheGround)//横移動チェック
             myAnimator.SetBool("Move", true);
         else
             myAnimator.SetBool("Move", false);
@@ -80,7 +84,7 @@ public class MyCharacterController : CreatureController {
         if (attacking) {
             CheckMyAttacking();
             ResetForceOnX();
-            ResetAllMovingStatus();
+//            ResetAllMovingStatus();
             myAnimator.SetBool("Attack", true);
         }
         else {

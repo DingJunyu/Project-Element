@@ -6,14 +6,19 @@ public class Material : MonoBehaviour {
     //公的訪問できる部分
 
     public bool typeRandom;
+    public int typeNumber;
 
     public GameObject textBar;//textBarのデータを保存する
     private GameObject realTextBar;//実際生成したtextBar
     public GameObject rightClickMenu;
     private GameObject realRightClickMenu;
 
+    private GameObject myPack;
     private bool inPack = false;
-    public void putInPack() { inPack = true; }
+    public void putInPack() {
+        inPack = true;
+        transform.GetComponent<Rigidbody2D>().isKinematic = true;
+    }
 
     //多分、パックの中にテンプレートを使って全部有効にするので、
     //テンプレートの部分はすべてのメソッドを無効化にする
@@ -107,6 +112,7 @@ public class Material : MonoBehaviour {
     public string thisName;
 
     private string serialNum;
+    public string ReferSerialNum() { return serialNum; }
 
     //乱数を生成する基準
     enum randomStandard {
@@ -119,7 +125,7 @@ public class Material : MonoBehaviour {
         crBox = new ColorBox();
     }
 
-    private void Start() {
+    private void Awake() {
         capacity = Random.Range(15, 50);
         damage = (float)capacity * Random.Range(0f, 1.6f);
 
@@ -133,6 +139,7 @@ public class Material : MonoBehaviour {
         SetShapeAndType();//属性に基づいてデータを生成する
 
         RandomString randomString = new RandomString();//ランダム文字列生成器
+        myPack = GameObject.Find("MyPack");
 
         serialNum = randomString.GenerateCheckCode32();//シリアル番号を生成する
         while ((PlayerPrefs.HasKey(serialNum))) {//重複チャック
@@ -141,15 +148,14 @@ public class Material : MonoBehaviour {
         PlayerPrefs.SetInt(serialNum, (int)GameManager.saveData.material);//保存データを有効化にする
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         PutThisItemIntoPack();//鞄に入れる
     }
 
     private void PutThisItemIntoPack() {
         if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
-            if (!GameObject.Find("MyPack").GetComponent<ItemPack>().
+            if (GameObject.Find("MyPack").GetComponent<ItemPack>().
                 InputNew(transform.gameObject)) {
-                Debug.Log("Pack Is Full");//鞄にスペースがない時にエラーメッセージを出す  
             }
         }
     }
@@ -334,6 +340,10 @@ public class Material : MonoBehaviour {
         }
     }
 
+    public void DeleteThisFromPack() {
+        myPack.GetComponent<ItemPack>().DeleteAnItem();
+    }
+
     ~Material() {
         if (realTextBar != default)
             Destroy(realTextBar);
@@ -341,7 +351,7 @@ public class Material : MonoBehaviour {
 
     private void Click() {
         if (GetComponent<Rigidbody2D>().isKinematic || inPack)
-            if (Input.GetMouseButtonDown(1)) {
+            if (Input.GetButtonDown("SubFire")) {
                 if (realRightClickMenu != default)
                     return;
                 //このメニューの親はアイテムではありません

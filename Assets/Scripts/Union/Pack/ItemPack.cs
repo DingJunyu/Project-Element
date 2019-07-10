@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemPack : MonoBehaviour
-{
+public class ItemPack : MonoBehaviour {
     /*すべてのアイテムをここに置くか。。。*/
     public GameObject itemTemplate;
 
@@ -25,6 +24,10 @@ public class ItemPack : MonoBehaviour
 
     string[] testTubesSerial;
 
+    private bool isPackOpened = false;
+    public bool isPackOpen() { return isPackOpened; }
+    private bool statusChanged = true;
+
     public ItemPack() {
         itemHere = new GameObject[maxItemNum];
         testTubesSerial = new string[maxItemNum];
@@ -35,7 +38,7 @@ public class ItemPack : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        if (PlayerPrefs.HasKey("MyPack")) isAEmptyPack = false;
+        if (PlayerPrefs.HasKey("AmountInMyPack")) isAEmptyPack = false;
 
         if (!isAEmptyPack) Load();//データがある時読み込む
 
@@ -44,45 +47,74 @@ public class ItemPack : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-
+        CheckOrder();
+        CheckStatus();
     }
 
-    private void Save() {
-        PlayerPrefs.SetInt("AmountInMyPack", itemNum);
+    public void DeleteAnItem() {
+        itemNum--;
+    }
 
-        for (int i = 0; i < itemNum; i++)
-        {
-            itemHere[i].GetComponent<Material>().Save();//データを保存する
-
-            PlayerPrefs.SetString("ItemInpack" + i, testTubesSerial[i]);//番号を保存する
+    private void CheckStatus() {
+        gameObject.GetComponent<Renderer>().enabled = isPackOpened;
+        for (int i = 0; i < itemNum; i++) {
+            itemHere[i].gameObject.GetComponent<Renderer>().enabled = isPackOpened;
         }
     }
 
+    private void CheckOrder() {
+        if (Input.GetKeyDown(KeyCode.B)) {
+            isPackOpened = !isPackOpened;
+            statusChanged = true;
+        }
+    }
+
+    private void Save() {
+        DeletePack();
+        PlayerPrefs.SetInt("AmountInMyPack", itemNum);
+
+        for (int i = 0; i < itemNum; i++) {
+            itemHere[i].GetComponent<Material>().Save();//データを保存する
+
+            PlayerPrefs.SetString("ItemInpack" + i,
+                itemHere[i].GetComponent<Material>().ReferSerialNum());//番号を保存する
+            PlayerPrefs.SetInt("ItemInPackNum" + i,
+                itemHere[i].GetComponent<Material>().typeNumber);
+        }
+        Debug.Log("Save Success!");
+    }
+
     private void Load() {
-        if (!PlayerPrefs.HasKey("ItemAmountInMyPack"))//ノーデータの時にそのまま終わる
+        if (!PlayerPrefs.HasKey("AmountInMyPack"))//ノーデータの時にそのまま終わる
             return;
 
-        itemNum = PlayerPrefs.GetInt("ItemAmountInMyPack", itemNum);
-        for (int i = 0; i < itemNum; i++)
-        {
+        itemNum = PlayerPrefs.GetInt("AmountInMyPack", itemNum);
+        for (int i = 0; i < itemNum; i++) {
             //新しいオブジェクトを生成する
-            itemHere[i] = Instantiate(itemTemplate,
+            itemHere[i] = Instantiate(itemTemplate.GetComponent<ItemList>().
+                ReferThisItem(PlayerPrefs.GetInt("ItemInPackNum" + i)),
                 transform);
             //保存されたデータを読み込む
             itemHere[i].GetComponent<Material>().
                 GiveMeANewSerialCode(PlayerPrefs.GetString("ItemInpack" + i));
-            itemHere[i].GetComponent<Material>().putInPack();
-           itemHere[1].transform.localPosition =
-                new Vector3((i % MaxOnRow) * nextX, (i / MaxOnRow) * nextY, 0f);
+            //保存されたデータを読み込む
+            itemHere[i].GetComponent<Material>().putInPack();//鞄に入れる(rigidbodyを無効化にする
+            itemHere[i].transform.localScale = new Vector2(1f, 1f);
+            itemHere[i].transform.localPosition =
+                 new Vector3((i % MaxOnRow) * nextX - 1.0f,
+                 -(i / MaxOnRow) * nextY + 1.0f, -.1f);
         }
+        Debug.Log("Load Success!");
     }
 
     public void DeletePack() {
         PlayerPrefs.DeleteKey("ItemMyPack");
         for (int i = 0; i < itemNum; i++) {
+            PlayerPrefs.DeleteKey("ItemInpack" + i);
+            PlayerPrefs.DeleteKey("ItemInPackNum" + i);
             itemHere[i].GetComponent<Material>().DeleteThis();//保存したもののデータを全部消す
         }
-        PlayerPrefs.DeleteKey("ItemAmountInMyPack");
+        PlayerPrefs.DeleteKey("AmountInMyPack");
     }
 
     public void Close() {
