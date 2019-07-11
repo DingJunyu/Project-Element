@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackTypeList : MonoBehaviour {
     [SerializeField]
-    public GameObject[] attackList;
+    public GameObject[] attackList;//攻撃のエフェクトを返す？
 
     private TypeOfAttack.Shape shape { get; }//読み込み専用
 

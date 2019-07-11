@@ -43,7 +43,7 @@ public class MyCharacterController : CreatureController {
         }
 
         if (Input.GetButtonDown("Fire") && !myPack.isPackOpen()) {
-            if (!AmIAttacking()) {
+            if (!AmIAttacking() && realAttackCollision == default) {
                 LetMeAttack();
                 realAttackCollision = Instantiate(attackCollision, transform);
             }

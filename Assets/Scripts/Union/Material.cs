@@ -363,7 +363,8 @@ public class Material : MonoBehaviour {
     private void Click() {
         if (GetComponent<Rigidbody2D>().isKinematic || inPack)
             if (Input.GetButtonDown("SubFire")) {
-                if (realRightClickMenu != default)
+                if (realRightClickMenu != default ||
+                    !transform.GetComponent<Renderer>().enabled)
                     return;
                 //このメニューの親はアイテムではありません
                 realRightClickMenu = Instantiate(rightClickMenu, transform);
