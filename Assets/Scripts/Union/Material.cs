@@ -114,6 +114,13 @@ public class Material : MonoBehaviour {
     private string serialNum;
     public string ReferSerialNum() { return serialNum; }
 
+    //乱数範囲
+    public int maxCapacity = 30;
+    public int minCapacity = 15;
+
+    public float maxDamageRate = 1.4f;
+    public float minDamageRate = 1.0f;
+
     //乱数を生成する基準
     enum randomStandard {
         better,
@@ -126,8 +133,9 @@ public class Material : MonoBehaviour {
     }
 
     private void Awake() {
-        capacity = Random.Range(15, 50);
-        damage = (float)capacity * Random.Range(0f, 1.6f);
+        capacity = Random.Range(minCapacity, maxCapacity);//この素材の量
+        damage = (float)capacity * 
+            Random.Range(minDamageRate, maxDamageRate);//ダメージを初期化
 
         //範囲チェック付きます、正しいデータを付けた限りセットを有効化にする
         if (typeRandom || setMyType > (int)TypeOfMagic.Type.noneType ||
@@ -156,6 +164,7 @@ public class Material : MonoBehaviour {
         if (canITakeIt && Input.GetKeyDown(KeyCode.E)) {
             if (GameObject.Find("MyPack").GetComponent<ItemPack>().
                 InputNew(transform.gameObject)) {
+                putInPack();
             }
         }
     }
@@ -300,10 +309,12 @@ public class Material : MonoBehaviour {
 
     private void OnMouseOver() {
         //右クリックメニューを使っていない時に詳細を描画する
-        if (!isThisTemplate && realRightClickMenu == default)
+        if (!isThisTemplate && realRightClickMenu == default &&
+            transform.GetComponent<Renderer>().enabled && inPack)
             ANewTextBar();
         //右クリックメニューを呼び出したら詳細画面を閉じる
-        if (realRightClickMenu != default && realTextBar != default) {
+        if ((realRightClickMenu != default && realTextBar != default) || 
+            !transform.GetComponent<Renderer>().enabled || !inPack) {
             Destroy(realTextBar);
             realTextBar = default;
         }

@@ -24,20 +24,24 @@ public class MyCharacterController : CreatureController {
     protected override void GetOrder() {
         status = (int)CreatureStatus.none;
         //押したキーで状態を渡す
-        if (!AmIAttacking()) {
-            if (Input.GetButton("Right")) {
-                status = (int)CreatureStatus.moveToRight;
-                ChangeDirectOnX(true);
-            }
-            if (Input.GetButton("Left")) {
-                status = (int)CreatureStatus.moveToLeft;
-                ChangeDirectOnX(false);
-            }
-            if (Input.GetButtonDown("Jump")) {
-                if (CanIJump(maxJumpTime))
-                    status = (int)CreatureStatus.jump;
-            }
+
+        if (Input.GetButton("Right")) {
+            status = (int)CreatureStatus.moveToRight;
+            if (!facingRight)
+                attacking = false;
+            ChangeDirectOnX(true);
         }
+        if (Input.GetButton("Left")) {
+            status = (int)CreatureStatus.moveToLeft;
+            if (facingRight)//攻撃の途中で方向を変更すれば攻撃を止める
+                attacking = false;
+            ChangeDirectOnX(false);
+        }
+        if (Input.GetButtonDown("Jump")) {
+            if (CanIJump(maxJumpTime))
+                status = (int)CreatureStatus.jump;
+        }
+
         if (Input.GetButtonDown("Fire") && !myPack.isPackOpen()) {
             if (!AmIAttacking()) {
                 LetMeAttack();
@@ -57,7 +61,7 @@ public class MyCharacterController : CreatureController {
     //********************************************
     protected override void SetAnimationStatus() {
         if (!attacking) {
-            if (oldPos.y < transform.position.y && status == (int)CreatureStatus.jump) {
+            if (status == (int)CreatureStatus.jump) {
                 myAnimator.SetBool("OnTheGround", false);
                 myAnimator.SetBool("Jump", true);
             }
@@ -72,6 +76,9 @@ public class MyCharacterController : CreatureController {
             onTheGround = true;
             nextOnTheGround = false;
         }
+        if (onTheGround) {
+            myAnimator.SetBool("Falling", false);
+        }
 
         //床の上に居る限り、移動動画の演出を行う
         if ((status==(int)CreatureStatus.moveToLeft ||
@@ -83,8 +90,6 @@ public class MyCharacterController : CreatureController {
 
         if (attacking) {
             CheckMyAttacking();
-            ResetForceOnX();
-//            ResetAllMovingStatus();
             myAnimator.SetBool("Attack", true);
         }
         else {
@@ -92,6 +97,8 @@ public class MyCharacterController : CreatureController {
         }
     }
 
+    //Risk Avoidance
+    //攻撃は300フレーム以上に続けたら強制終了
     private void CheckMyAttacking() {
         attackFrameCounter++;
         if (attackFrameCounter < maxAttackFrame)
@@ -106,5 +113,9 @@ public class MyCharacterController : CreatureController {
         myAnimator.SetBool("Jump", false);
         myAnimator.SetBool("Falling", false);
         myAnimator.SetBool("Move", false);
+    }
+
+    protected override void OtherProcessWhenDead() {
+        
     }
 }

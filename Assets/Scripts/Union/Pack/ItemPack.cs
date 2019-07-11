@@ -58,7 +58,8 @@ public class ItemPack : MonoBehaviour {
     private void CheckStatus() {
         gameObject.GetComponent<Renderer>().enabled = isPackOpened;
         for (int i = 0; i < itemNum; i++) {
-            itemHere[i].gameObject.GetComponent<Renderer>().enabled = isPackOpened;
+            if (itemHere[i] != default)
+                itemHere[i].gameObject.GetComponent<Renderer>().enabled = isPackOpened;
         }
     }
 

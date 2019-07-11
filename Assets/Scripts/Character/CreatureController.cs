@@ -41,7 +41,6 @@ public abstract class CreatureController : MonoBehaviour {
     protected bool CanIJump() { return jumpCount < 1; }//基本は一回しかジャンプできない
 
     /*攻撃関連*/
-    public bool unMovable = false;//これはattackingでコントロールする
     public bool attacking;//外に渡す入口
     protected void LetMeAttack() { attacking = true; }
     protected void StopAttacking() { attacking = false; }
@@ -90,10 +89,10 @@ public abstract class CreatureController : MonoBehaviour {
             Death();
     }
 
-    protected abstract void Inif();
+    protected abstract void Inif();//特殊初期化
     protected abstract void GetOrder();//命令を取得する
-    protected abstract void CheckChildStatus();
-    protected abstract void SetAnimationStatus();
+    protected abstract void CheckChildStatus();//特殊状態チェック
+    protected abstract void SetAnimationStatus();//アニメーションチェック
 
     public bool alive = true;
     public bool deadEnd = false;
@@ -110,8 +109,11 @@ public abstract class CreatureController : MonoBehaviour {
     }
 
     private void Death() {
+        OtherProcessWhenDead();
         Destroy(transform.gameObject);
     }
+
+    protected abstract void OtherProcessWhenDead();//死ぬ時の特殊処理
 
     //*********************************************
     //移動関連
@@ -119,8 +121,6 @@ public abstract class CreatureController : MonoBehaviour {
     private void CheckStatus() {
         if (onTheGround)//床に居る時にジャンプ回数をリセットする
             jumpCount = 0;
-
-        unMovable = attacking;//攻撃状態による移動動画の状態を変化
     }
 
     private void Move() {
@@ -175,6 +175,7 @@ public abstract class CreatureController : MonoBehaviour {
 
         theScale.x = right ? Math.Abs(theScale.x) : -Math.Abs(theScale.x);
         transform.localScale = theScale;
+        facingRight = right;
     }
 
     protected void ChangeDirectOnX() {

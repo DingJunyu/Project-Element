@@ -39,6 +39,11 @@ public class MovableUI : MonoBehaviour
             MoveWithMouse();
         if (moveWithObject && realParent != default)//そのものに従う
             MoveWithObject();
+        CheckStatus();
+    }
+
+    void CheckStatus() {
+
     }
 
     void MoveWithMouse() {

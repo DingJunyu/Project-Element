@@ -4,8 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 
-public class TestTube : MonoBehaviour
-{
+public class TestTube : MonoBehaviour {
     // Data
     private TypeOfMagic Type;
     private TypeOfAttack AttackType;
@@ -39,8 +38,7 @@ public class TestTube : MonoBehaviour
         crBox = new ColorBox();
     }
 
-    private void Start()
-    {
+    private void Start() {
         RandomString randomString = new RandomString();
 
         reagent = this.transform.Find("reagent").transform;
@@ -60,13 +58,12 @@ public class TestTube : MonoBehaviour
         PlayerPrefs.SetInt(serialNum, 1);
     }
 
-    private void Update()
-    {
+    private void Update() {
         CountFlame();
         CheckColor();
         if (changed) { Save(); }
         if (used) { DeleteThis(); }//使い終わったらマネージャーの方で削除してください
-        SetReagent();   
+        SetReagent();
     }
 
     private void CheckColor() {
@@ -139,10 +136,10 @@ public class TestTube : MonoBehaviour
 
         realTextBar.gameObject.transform.Find("Status").GetComponent<UnityEngine.UI.Text>().
             text = TypeOfMagic.name_jp[Type.ReferDamage().typeA] +
-            string.Format("{0:.00}", Type.ReferDamage().typeADam) + " " +
+            string.Format("{0:.0}", Type.ReferDamage().typeADam) + " " +
             TypeOfMagic.name_jp[Type.ReferDamage().typeB] +
-            string.Format("{0:.00}", Type.ReferDamage().typeBDam) + " " +
-            string.Format("速度 {0:.00}", AttackType.ReferSpeed());
+            string.Format("{0:.0}", Type.ReferDamage().typeBDam) + " " +
+            string.Format("速度 {0:.0}", AttackType.ReferSpeed());
 
         realTextBar.gameObject.transform.Find("Type").GetComponent<UnityEngine.UI.Text>().
             text = AttackType.ReferAttackType() +
@@ -163,13 +160,13 @@ public class TestTube : MonoBehaviour
         //画像が変更されない限り、ここの数字を変更する必要がない
         //y座標:起始座標＋パーセンテージに応じて変化値
         if (per <= 0.2f) {
-            reagent.localPosition = new Vector3(0f, - 0.16f - (0.2f - per) * 0.2f, 0f);
+            reagent.localPosition = new Vector3(0f, -0.16f - (0.2f - per) * 0.2f, 0f);
         }
         else if (per != 1f) {
-            reagent.localPosition = new Vector3(0f, - 0.005f - (1f - per) * 0.2f, 0f);
+            reagent.localPosition = new Vector3(0f, -0.005f - (1f - per) * 0.2f, 0f);
         }
         else
-            reagent.localPosition=new Vector3(0f,0f,0f);
+            reagent.localPosition = new Vector3(0f, 0f, 0f);
     }
 
     ~TestTube() {

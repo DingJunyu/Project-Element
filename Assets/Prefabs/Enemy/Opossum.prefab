@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb33fd7be4d478a45ae5853c800d0045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1.4
   jumpPower: 200
   unMovable: 1
   attacking: 0
@@ -127,6 +127,11 @@ MonoBehaviour:
   HitPointBar: {fileID: 4973485283483568119, guid: 0c929ce19e5ae524d82047a58638af55,
     type: 3}
   hasHPBar: 1
+  WorldItemList: {fileID: 0}
+  itemList: {fileID: 5517390005105588112, guid: ef4a488a9929f504cb1a2aebeb7dc609,
+    type: 3}
+  DropRate: 60
+  itemTypeList: 0000000001000000
   leftXtoNow: 2
   rightXtoNow: 1
   faceLeft: 1

@@ -7,6 +7,12 @@ public abstract class StandardEnemy : CreatureController {
     public bool hasHPBar = true;
     protected GameObject realHitPointBar;
 
+    public GameObject WorldItemList;
+    public GameObject itemList;
+    public int DropRate = 60;
+    [SerializeField]
+    public int[] itemTypeList;
+
     //HPバーつけたものに必ず使う
     protected void EnemyInif() {
         if (!hasHPBar)
@@ -24,6 +30,23 @@ public abstract class StandardEnemy : CreatureController {
             Destroy(realHitPointBar);
             hasHPBar = false;//上の部分を無効化する
         }
+    }
+
+    protected void DropAnItem() {
+        if (Random.Range(0, 100) < DropRate) {//確率発生
+            if(itemTypeList.Length!=0) {//ドロップリストにものがある限り
+                GameObject temp;
+                temp = 
+                    Instantiate(itemList.GetComponent<ItemList>().//アイテムリストから物を取る
+                    ReferThisItem(itemTypeList[Random.Range(0, itemTypeList.Length)]),//ランダムで選ぶ
+                    WorldItemList.transform);
+                temp.transform.position = transform.position;//位置を一致する
+            }
+        }
+    }
+
+    protected override void OtherProcessWhenDead() {
+        DropAnItem();//敵が死んだ時にアイテムをドロップする
     }
 
     ~StandardEnemy() {
