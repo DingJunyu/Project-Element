@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7233113885225105703}
   - component: {fileID: 7233113885225105700}
-  - component: {fileID: 7233113885225105697}
   - component: {fileID: 7233113885225105696}
   - component: {fileID: 7233113885225105699}
-  - component: {fileID: 1916003065}
   - component: {fileID: 4038412245308681336}
+  - component: {fileID: 7233113885225105697}
+  - component: {fileID: 1916003065}
+  - component: {fileID: 1829217408}
+  - component: {fileID: 4841469474256626974}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -85,27 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7233113885225105697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7233113885225105701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb536935ab73384da24914014cb265b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  jumpPower: 250
-  unMovable: 0
-  attacking: 0
-  alive: 1
-  deadEnd: 0
-  maxJumpTime: 2
-  attackCollision: {fileID: 8102330346071003622, guid: 50b314c60034a094bb3da969d7f4dffe,
-    type: 3}
 --- !u!50 &7233113885225105696
 Rigidbody2D:
   serializedVersion: 4
@@ -146,20 +127,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1916003065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7233113885225105701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34dde6efd1d37874cb67ef27ccb694e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHitPoint: 5
-  hitPoint: 0
 --- !u!70 &4038412245308681336
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -176,6 +143,65 @@ CapsuleCollider2D:
   m_Offset: {x: -0.07186097, y: 0.081813216}
   m_Size: {x: 0.65055025, y: 0.88729215}
   m_Direction: 0
+--- !u!114 &7233113885225105697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233113885225105701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb536935ab73384da24914014cb265b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  jumpPower: 250
+  attacking: 0
+  alive: 1
+  deadEnd: 0
+  maxJumpTime: 2
+  attackCollision: {fileID: 8102330346071003622, guid: 50b314c60034a094bb3da969d7f4dffe,
+    type: 3}
+--- !u!114 &1916003065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233113885225105701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34dde6efd1d37874cb67ef27ccb694e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoint: 5
+  hitPoint: 0
+--- !u!114 &1829217408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233113885225105701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4a8fc4cc5e7124999212f1928d2908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  physicsDamage: 1
+--- !u!114 &4841469474256626974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233113885225105701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6c4f6846a786540907b4451bac3007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7233113886296058693
 GameObject:
   m_ObjectHideFlags: 0

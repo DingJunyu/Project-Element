@@ -7,7 +7,8 @@ public class TypeOfAttack {
         public enum ShapeType {
             rayOfLight,
             radialLight,
-            annulus
+            annulus,
+            amount
         }
 
         public static readonly string[] shapeTypeName = {
@@ -73,7 +74,8 @@ public class TypeOfAttack {
         public enum TypeOfStep {
             moment,
             stage,
-            diffusion
+            diffusion,
+            amount
         }
 
         public static readonly string[] stepTypeName = {

@@ -9,9 +9,9 @@ public class DamageContainer
         typeADam = tAD; typeBDam = tBD;
     }
 
-    public int typeA;
-    public int typeB;
+    public int typeA { get; }
+    public int typeB { get; }
 
-    public float typeADam;
-    public float typeBDam;
+    public float typeADam { get; }
+    public float typeBDam { get; }
 }

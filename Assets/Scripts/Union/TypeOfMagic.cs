@@ -158,7 +158,7 @@ public class TypeOfMagic
         return true;
     }
 
-    public DamageContainer ReferDamage() {
+    public DamageContainer ReferDamage() {//ダメージを読む
         DamageContainer answer = new DamageContainer(best.a, status[best.a],
             best.b, status[best.b]);
         return answer;

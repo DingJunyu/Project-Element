@@ -21,11 +21,11 @@ public class LifeSupportSystem : MonoBehaviour {
         }
     }
 
-    public void ReferDamage(int damage) {
+    public void SufferDamage(int damage) {
         hitPoint -= damage;
     }
 
-    public void ReferHeal(int damage) {
+    public void SufferHeal(int damage) {
         hitPoint += damage;
     }
 }

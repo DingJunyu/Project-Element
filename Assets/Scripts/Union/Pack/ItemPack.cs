@@ -30,6 +30,7 @@ public class ItemPack : MonoBehaviour {
 
     public ItemPack() {
         itemHere = new GameObject[maxItemNum];
+
         testTubesSerial = new string[maxItemNum];
 
         isAEmptyPack = true;
