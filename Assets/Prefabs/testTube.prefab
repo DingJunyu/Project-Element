@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 27637315096564443}
   - component: {fileID: 7620178842129628345}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: reagent
   m_TagString: reagent
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 340667639528515181}
   - component: {fileID: 5905740521758157577}
   - component: {fileID: -1252120600635106375}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: testTube
   m_TagString: tube
   m_Icon: {fileID: 0}

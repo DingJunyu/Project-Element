@@ -6,20 +6,30 @@ public class ForMainCamera : MonoBehaviour {
     private GameObject player;
     private float coordZ = -10;
 
+    private Camera camera;
+
     //各ステージの限界
     public GameObject min_x;
     public GameObject max_x;
     public GameObject min_y;
     public GameObject max_y;
 
+    float cameraHeight;
+    float cameraWidth;
+    float aspectRatio = Screen.width * 1.0f / Screen.height;
+
     private Vector3 newPos;
 
     private void Start() {
         player = GameObject.Find("Player");
+        camera = GetComponent<Camera>();
+
+        cameraHeight = camera.orthographicSize;
     }
 
     private void Update() {
         GetPlayerPos();
+        CheckRate();
         CheckRange();
         transform.position = newPos;
     }
@@ -29,14 +39,19 @@ public class ForMainCamera : MonoBehaviour {
             player.transform.position.y, coordZ);
     }
 
+    private void CheckRate() {
+        cameraHeight = camera.orthographicSize;
+        cameraWidth = cameraHeight * aspectRatio;
+    }
+
     private void CheckRange() {
-        if (newPos.x - Screen.width / 100 < min_x.transform.position.x)
-            newPos.x = min_x.transform.position.x + Screen.width / 100;
-        if (newPos.x + Screen.width / 100 > max_x.transform.position.x)
-            newPos.x = max_x.transform.position.x - Screen.width / 100;
-        if (newPos.y - Screen.height / 100 < min_y.transform.position.y)
-            newPos.y = min_y.transform.position.y + Screen.height / 100;
-        if (newPos.y + Screen.height / 100 > max_y.transform.position.y)
-            newPos.y = max_y.transform.position.y - Screen.height / 100;
-    }   
+        if (newPos.x - cameraWidth < min_x.transform.position.x)
+            newPos.x = min_x.transform.position.x + cameraWidth;
+        if (newPos.x + cameraWidth > max_x.transform.position.x)
+            newPos.x = max_x.transform.position.x - cameraWidth;
+        if (newPos.y - cameraHeight < min_y.transform.position.y)
+            newPos.y = min_y.transform.position.y + cameraHeight;
+        if (newPos.y + cameraHeight > max_y.transform.position.y)
+            newPos.y = max_y.transform.position.y - cameraHeight;
+    }
 }

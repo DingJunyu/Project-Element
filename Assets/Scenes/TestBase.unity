@@ -6099,5 +6099,20 @@ PrefabInstance:
       propertyPath: m_HDR
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8811218593556590724, guid: a216acba5ed70fa47a747f6c7aee85f8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811218593556590724, guid: a216acba5ed70fa47a747f6c7aee85f8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8811218593556590724, guid: a216acba5ed70fa47a747f6c7aee85f8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a216acba5ed70fa47a747f6c7aee85f8, type: 3}

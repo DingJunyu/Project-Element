@@ -15,6 +15,8 @@ public class BarController : MonoBehaviour {
     private GameObject myRealParent;
 
     private Transform thisFilter;
+    private float multiRate;
+    const float standardScreenX = 800;
 
     public BarController() {
         CrBox = new ColorBox();
@@ -26,6 +28,7 @@ public class BarController : MonoBehaviour {
 
     private void Start() {
         SetColor();
+        SetSize();
     }
 
     private void SetColor() {
@@ -33,10 +36,15 @@ public class BarController : MonoBehaviour {
             CrBox.SetColorWithRGB(red, green, blue);
     }
 
+    private void SetSize() {
+        multiRate = Screen.width / standardScreenX * 2;
+        transform.parent.transform.localScale = new Vector2(multiRate, multiRate);
+    }
+
     //入力されたデータからＨＰバーのステータスを設置します
     public void SetPercentage(int quant,int maxQuant) {
         transform.localPosition = new Vector2(
-            ((float)maxQuant - (float)quant) / (float)maxQuant * -pos,
+            (((float)maxQuant - (float)quant) / (float)maxQuant * -pos) * multiRate/2,
             0);
     }
 }
