@@ -23,9 +23,13 @@ public class LifeSupportSystem : MonoBehaviour {
 
     public void SufferDamage(int damage) {
         hitPoint -= damage;
+        if (hitPoint <= 0)
+            hitPoint = 0;
     }
 
     public void SufferHeal(int damage) {
         hitPoint += damage;
+        if (hitPoint > maxHitPoint)
+            hitPoint = maxHitPoint;
     }
 }

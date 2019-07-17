@@ -4,6 +4,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 
+/*射程について、魔法を使う前に使う量を選ぶことができます、それによって射程が変わります。
+ 基本的には量が多ければ多いほど長く行きます*/
 public class TestTube : MonoBehaviour {
     // Data
     private TypeOfMagic Type;
@@ -173,4 +175,6 @@ public class TestTube : MonoBehaviour {
         if (realTextBar != default)
             Destroy(realTextBar);
     }
+
+    private float quantityPerThreeSeconds;
 }

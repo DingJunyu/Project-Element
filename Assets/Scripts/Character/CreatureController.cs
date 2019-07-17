@@ -170,6 +170,7 @@ public abstract class CreatureController : MonoBehaviour {
         myRigidbody.velocity = new Vector2(0, 0);
     }
 
+    //方向変更ではもっと効率が良い方法があるはず
     protected void ChangeDirectOnX(bool right) {
         Vector2 theScale = transform.localScale;
 
