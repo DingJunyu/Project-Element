@@ -6,12 +6,16 @@ public class LifeSupportSystem : MonoBehaviour {
     public int maxHitPoint = 5;
     public int hitPoint;
 
+    private PhysicalProtectiveSystem physicalProtectiveSystem;
+
     private void Start() {
         hitPoint = maxHitPoint;
+
+        physicalProtectiveSystem = GetComponent<PhysicalProtectiveSystem>();
     }
 
     private void Update() {
-        CheckAlive();//生きる状態確認
+        
     }
 
     private void CheckAlive() {
@@ -21,14 +25,27 @@ public class LifeSupportSystem : MonoBehaviour {
         }
     }
 
-    public void SufferDamage(int damage) {
+    public void SufferDamage(int damage) {//普通のダメージを受ける
         hitPoint -= damage;
-        if (hitPoint <= 0)
-            hitPoint = 0;
+        CheckAlive();
+    }
+
+    public void SufferDamage(DamageContainer damage) {
+        hitPoint -= (int)physicalProtectiveSystem.reserveDamage(damage);
+        CheckAlive();
     }
 
     public void SufferHeal(int damage) {
         hitPoint += damage;
+        CheckTop();
+    }
+
+    private void CheckButton() {
+        if (hitPoint <= 0)
+            hitPoint = 0;
+    }
+
+    private void CheckTop() {
         if (hitPoint > maxHitPoint)
             hitPoint = maxHitPoint;
     }

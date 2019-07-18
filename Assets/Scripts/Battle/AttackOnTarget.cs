@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AttackOnTarget : MonoBehaviour {
     private bool alreadyAttack = false;//一回は一つのターゲットにダメージを与える
-    private int damage = 1;//ここはまだ完成していない！！
 
     private void Start() {
         

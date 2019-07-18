@@ -15,6 +15,7 @@ public class Material : MonoBehaviour {
 
     private GameObject myPack;
     private bool inPack = false;
+    public bool ReferInPack() { return inPack; }
     public void putInPack() {
         inPack = true;
         transform.GetComponent<Rigidbody2D>().isKinematic = true;

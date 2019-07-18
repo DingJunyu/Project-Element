@@ -47,7 +47,10 @@ public class MyCharacterController : CreatureController {
                 LetMeAttack();
                 realAttackCollision = Instantiate(attackCollision, transform);
             }
-        } 
+        }
+        if (Input.GetButtonDown("SubFire")) {
+            GetComponent<AlchemyCombatSystem>().UseMagic();
+        }
     }
 
     protected override void CheckChildStatus() {

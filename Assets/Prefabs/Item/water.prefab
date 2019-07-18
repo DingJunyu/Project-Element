@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 5577870180053559010}
   - component: {fileID: 411387881642293403}
   - component: {fileID: -660750846295120636}
+  - component: {fileID: -8803924211704828401}
   m_Layer: 9
   m_Name: water
   m_TagString: Item_Material
@@ -178,6 +179,10 @@ MonoBehaviour:
   choosed: 0
   setMyType: 0
   thisName: water
+  maxCapacity: 30
+  minCapacity: 15
+  maxDamageRate: 1.4
+  minDamageRate: 1
 --- !u!61 &411387881642293403
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -225,3 +230,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-8803924211704828401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5577870180053559011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2f2c121b7c2f748833b002d5223343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standard: {fileID: 2100000, guid: 96a79314d5d99fe468fb7bc427e73a7b, type: 2}
+  outLineVer: {fileID: 2100000, guid: e81a1b7429cd56245b90fc298872c0d4, type: 2}

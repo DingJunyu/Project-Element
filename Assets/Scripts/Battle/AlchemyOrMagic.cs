@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AlchemyOrMagic : MonoBehaviour {
+    private GameObject myRealParent;
+
     //一定時間内に一回攻撃は一つの敵に対して一回しか発生しません
     List<GameObject> hitList;
 
-    private bool alreadyAttack = false;//一回は一つのターゲットにダメージを与える
-    private int damage;//ここはまだ完成していない！！
+    private float lastAttackTime;//一回は一つのターゲットにダメージを与え
+    private int damage = 0;//ここはまだ完成していない！！
+    DamageContainer damageContainer;
 
-    public int noneDamageGap;//その間隔
-    private float speed;
+    public const float noneDamageGap = 0.5f;//その間隔
+    protected float speed = 1;
 
-    private int time;//継続時間
-    private int limitedTime = 0;
+    protected float startTime;
+    protected float time;//継続時間
+    protected float limitedTime = 100f;
+    protected float multiTime;//使う量によって継続時間が変わる
     public void SetlimitedTime(int thisTime) { limitedTime = thisTime; }
 
     //初期化の時にSetとCalの中のいずれを呼ばないといけない
@@ -31,30 +36,79 @@ public abstract class AlchemyOrMagic : MonoBehaviour {
         transform.GetComponent<Renderer>().material.color = targetColor;
     }
 
-    private void Start() {
-        StandardStart();
+    private void Awake() {
+        myRealParent = transform.parent.gameObject;
     }
 
-    protected abstract void StandardStart();
+    private void Start() {
+        StandardStart();
+        CommonStart();
+    }
+
+    private void StandardStart() {
+        hitList = new List<GameObject>();
+
+        damageContainer = default;
+
+        startTime = Time.fixedTime;
+        lastAttackTime = Time.fixedTime;
+    }
+
+    protected abstract void CommonStart();
 
     private void Update() {
         StandardUpdate();
+        CommonUpdate();
+       
         TakeDamage();
+        ClearThis();
     }
 
-    protected abstract void StandardUpdate();
+    protected abstract void CommonUpdate();
+
+    private void StandardUpdate() {
+        transform.parent.transform.localPosition = new Vector3(0f, 0f, 0.1f);
+    }
+
+    private void SetPos() {
+
+    }
 
     private void OnTriggerEnter2D(Collider2D collision) {//敵をダメージリストに入れる
-        hitList.Add(collision.gameObject);
+        if (collision.gameObject.tag == "Enemy")
+            hitList.Add(collision.gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        hitList.Remove(collision.gameObject);//削除の効率が悪いかも。。。
+        if (collision.gameObject.tag == "Enemy")
+            hitList.Remove(collision.gameObject);//削除の効率が悪いかも。。。
     }
 
     private void TakeDamage() {
-        foreach (var target in hitList) {
-            target.transform.GetComponent<LifeSupportSystem>().SufferDamage(damage);
-        }
+        if (lastAttackTime + noneDamageGap > Time.fixedTime)
+            return;
+        lastAttackTime = Time.fixedTime;
+
+        if (hitList != null)
+            foreach (var target in hitList) {
+                if (damage != 0)
+                    target.transform.GetComponent<LifeSupportSystem>().
+                        SufferDamage(damage);
+                if (damageContainer != default)
+                    target.transform.GetComponent<LifeSupportSystem>().
+                        SufferDamage(damageContainer);
+            }
+    }
+
+    //削除
+    private void ClearThis() {
+        if (startTime + limitedTime > Time.fixedTime)
+            return;
+
+        GameObject.Find("Player").GetComponent<AlchemyCombatSystem>().
+            SetEnd();
+
+        Destroy(transform.parent.gameObject);
+        Destroy(this);
     }
 }

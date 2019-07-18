@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
-    public enum saveData { 
+public class GameManager : MonoBehaviour {
+    public enum saveData {
         material,
         testTube
     }
@@ -32,12 +31,13 @@ public class GameManager : MonoBehaviour
     public void HereHasNoObject() { isHereAnObject = false; }
     public bool AnObjectHere() { return isHereAnObject; }
 
+    public GameObject player;
+
     /*単独のファイルにまとめる*/
     //必要のは：倉庫(200)、パック(50)、試験管パック(12)
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
 
     }
 
@@ -69,29 +69,47 @@ public class GameManager : MonoBehaviour
 
     private void ChooseOne() {//選択
         if (Input.GetButtonDown("Fire")) {
-            RaycastHit2D hit = 
+            RaycastHit2D hit =
                 Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),
                 Vector2.zero);
-                    
+
             if (hit.collider != null) {
-                if (hit.collider.gameObject.tag == "Item_Material"){
+                if (hit.collider.gameObject.tag == "Item_Material") {
+                    //鞄に居る限り選べます
+                    if (!hit.collider.gameObject.GetComponent<Material>().ReferInPack())
+                        return;
+                    ResetChooseA();//選択状態をリセット
                     choosedA = hit.collider.gameObject;
+                    choosedA.GetComponent<OutLineStatus>().SetChoose();
                 }
 
                 if (hit.collider.gameObject.tag == "Item_Trigger") {
+                    //鞄に居る限り選べます
+                    if (!hit.collider.gameObject.GetComponent<TryCollision>().
+                        myParent().gameObject.GetComponent<Material>().ReferInPack())
+                        return;
+                    ResetChooseA();//選択状態をリセット
                     choosedA = hit.collider.gameObject.GetComponent<TryCollision>().
                         myParent().gameObject;
+                    choosedA.GetComponent<OutLineStatus>().SetChoose();
                 }
 
                 if (hit.collider.gameObject.tag == "tube") {
-                    if (choosedA != default) 
-                    choosedB = hit.collider.gameObject;
+                    if (choosedA != default)
+                        choosedB = hit.collider.gameObject;
                 }
             }
-            else{//選択をクリア
-                choosedA = default;
+            else {//選択をクリア
+                ResetChooseA();
                 choosedB = default;
             }
         }
+    }
+
+    private void ResetChooseA() {
+        if (choosedA != default) {
+            choosedA.GetComponent<OutLineStatus>().SetUnChoose();
+        }
+        choosedA = default;
     }
 }

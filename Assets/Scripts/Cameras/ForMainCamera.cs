@@ -6,7 +6,7 @@ public class ForMainCamera : MonoBehaviour {
     private GameObject player;
     private float coordZ = -10;
 
-    private Camera camera;
+    private Camera thisCamera;
 
     //各ステージの限界
     public GameObject min_x;
@@ -22,9 +22,9 @@ public class ForMainCamera : MonoBehaviour {
 
     private void Start() {
         player = GameObject.Find("Player");
-        camera = GetComponent<Camera>();
+        thisCamera = GetComponent<Camera>();
 
-        cameraHeight = camera.orthographicSize;
+        cameraHeight = thisCamera.orthographicSize;
     }
 
     private void Update() {
@@ -40,7 +40,7 @@ public class ForMainCamera : MonoBehaviour {
     }
 
     private void CheckRate() {
-        cameraHeight = camera.orthographicSize;
+        cameraHeight = GetComponent<Camera>().orthographicSize;
         cameraWidth = cameraHeight * aspectRatio;
     }
 
