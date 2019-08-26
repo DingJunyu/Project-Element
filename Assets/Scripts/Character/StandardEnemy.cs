@@ -11,7 +11,7 @@ public abstract class StandardEnemy : CreatureController {
     public GameObject itemList;
     public int DropRate = 60;
     [SerializeField]
-    public int[] itemTypeList;
+    public int[] itemTypeList;//ドロップリスト
 
     //HPバーつけたものに必ず使う
     protected void EnemyInif() {
@@ -60,4 +60,6 @@ public abstract class StandardEnemy : CreatureController {
     protected override abstract void GetOrder();//命令を取得する
     protected override abstract void CheckChildStatus();
     protected override abstract void SetAnimationStatus();
+
+
 }

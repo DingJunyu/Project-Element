@@ -36,7 +36,7 @@ public class RayOfLight : AlchemyOrMagic {
             length = maxLength;
         Vector3 temp;
         temp = transform.localPosition;
-        temp.x = length;
+        temp.x = length / 2f;
         temp.z = 0.1f;
         temp.y = 0f;
         transform.localPosition = temp;
