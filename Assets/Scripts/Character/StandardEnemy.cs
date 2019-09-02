@@ -60,6 +60,4 @@ public abstract class StandardEnemy : CreatureController {
     protected override abstract void GetOrder();//命令を取得する
     protected override abstract void CheckChildStatus();
     protected override abstract void SetAnimationStatus();
-
-
 }

@@ -8,6 +8,9 @@ public class LifeSupportSystem : MonoBehaviour {
 
     private PhysicalProtectiveSystem physicalProtectiveSystem;
 
+    public GameObject showDamage;
+    private GameObject realDamage;
+
     private void Start() {
         hitPoint = maxHitPoint;
 
@@ -27,6 +30,10 @@ public class LifeSupportSystem : MonoBehaviour {
 
     public void SufferDamage(int damage) {//普通のダメージを受ける
         hitPoint -= damage;
+
+        realDamage = Instantiate(showDamage, this.transform);
+        realDamage.GetComponent<ShowDamage>().SetDamage(damage, true);
+
         CheckAlive();
     }
 

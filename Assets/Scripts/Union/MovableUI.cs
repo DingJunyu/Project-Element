@@ -6,6 +6,9 @@ public class MovableUI : MonoBehaviour
 {
     public bool moveWithObject = false;
     public bool moveWithMouse = true;
+    public bool damageText = false;
+
+    private bool haveBeenMoved = false;
 
     private Canvas canvas;
     private Camera mainCamera;
@@ -27,7 +30,8 @@ public class MovableUI : MonoBehaviour
     void Start() {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        plateMesh = transform.Find("Plate").GetComponent<RectTransform>();
+        if (!damageText)
+            plateMesh = transform.Find("Plate").GetComponent<RectTransform>();
         transform.SetParent(canvas.transform);//UIに所属する
 
         size = canvas.GetComponent<RectTransform>().sizeDelta;
@@ -37,13 +41,14 @@ public class MovableUI : MonoBehaviour
     void Update() {
         if (moveWithMouse)//マウスに従う
             MoveWithMouse();
-        if (moveWithObject && realParent != default)//そのものに従う
+        if (moveWithObject && realParent != default && !haveBeenMoved)//そのものに従う
             MoveWithObject();
         CheckStatus();
     }
 
     void CheckStatus() {
-
+        if (damageText)
+            haveBeenMoved = true;
     }
 
     void MoveWithMouse() {
@@ -93,5 +98,12 @@ public class MovableUI : MonoBehaviour
         //座標を更新する
         transform.GetComponent<RectTransform>().localPosition =
             pos;
+    }
+
+    void InifDamageText() {
+        transform.GetComponent<RectTransform>().localRotation =
+            new Quaternion(1f, 1f, 1f, 1f);
+        transform.GetComponent<RectTransform>().localScale =
+            new Vector3(1f, 1f, 1f);
     }
 }

@@ -178,6 +178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoint: 5
   hitPoint: 0
+  showDamage: {fileID: 1728804600241826905, guid: ac3438e6a46102041acb4628b9e0de24,
+    type: 3}
 --- !u!114 &1829217408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b154676e222225048a6f0d551ffc91ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicTypeList: {fileID: 0}
+  magicTypeList: {fileID: 3556113764840446052, guid: d2ebfac6b74a1ed4e9f392e910f180a5,
+    type: 3}
+  usingMagic: 0
 --- !u!1 &7233113886296058693
 GameObject:
   m_ObjectHideFlags: 0
