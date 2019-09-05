@@ -47,8 +47,20 @@ public class MovableUI : MonoBehaviour
     }
 
     void CheckStatus() {
-        if (damageText)
+        if (damageText) {
             haveBeenMoved = true;
+            TextMoveOver();
+        }
+    }
+
+    void TextMoveOver() {
+        Vector2 newPos;
+
+        newPos = transform.position;
+
+        newPos.y += 0.01f;
+
+        transform.position = newPos;
     }
 
     void MoveWithMouse() {

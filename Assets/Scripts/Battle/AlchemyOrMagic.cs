@@ -17,7 +17,7 @@ public abstract class AlchemyOrMagic : MonoBehaviour {
 
     protected float startTime;
     protected float time;//継続時間
-    protected float limitedTime = 100f;
+    protected float limitedTime = 2f;
     protected float multiTime;//使う量によって継続時間が変わる
     public void SetlimitedTime(int thisTime) { limitedTime = thisTime; }
 
